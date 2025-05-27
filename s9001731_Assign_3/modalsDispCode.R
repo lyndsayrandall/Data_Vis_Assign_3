@@ -29,3 +29,23 @@ dispAccessModal <- function(input,value) {
       footer = tagList(modalButton("Return"))
     ))})   
 }
+
+
+dispAboutModal <- function(input,value) {
+  observeEvent(input[[value]], {
+    showModal(modalDialog(
+      title= "About",
+      div( style='overflow:scroll',
+           tags$img(src = base64enc::dataURI(file = 'Images/potato.svg',
+                                             mime = 'image/svg+xml'),
+                    alt='Potato Icon SVG'
+                    )),
+      div( style='overflow:scroll',
+           tags$img(src = base64enc::dataURI(file = 'Images/game.ico',
+                                             mime = 'image/vnd.microsoft.icon'),
+                    alt='WOWS Icon SVG'
+           )),
+      footer = tagList(modalButton("Return"))
+    ))})  
+}
+  
