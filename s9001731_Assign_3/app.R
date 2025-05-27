@@ -31,6 +31,7 @@ server <- function(input, output, session) {
   source("utilFun.R")
   source("modalsDispCode.R")
   source("errorPlotsMessages.R")
+  source("dmgWRDiffPlot.R")
   
   
   # https://stackoverflow.com/questions/21465411/r-shiny-passing-reactive-to-selectinput-choices
@@ -48,7 +49,7 @@ server <- function(input, output, session) {
     
 
     req(input$type)
-    plotWinTot(gamedata, input$type)
+    plotdmgWRDiff(gamedata, input$type)
     })
 
   dispRefModal(input,"references")
@@ -79,17 +80,24 @@ ui <- fixedPage(
     # Application title
     titlePanel(textOutput("slideTitle")),
     # Drop Down
-    sidebarLayout(
-      sidebarPanel(
-        "Sidebar",
-        width = 2,
-        uiOutput("selBattleType")),
-      # Show a plot of the generated distribution
-      mainPanel(
-       
-         plotlyOutput("testPlot2")),
-      position = c("right")   
-      ),
+    
+    tabsetPanel(
+      tabPanel("Battle Type",
+               sidebarLayout(
+                 sidebarPanel(
+                   "Sidebar",
+                   width = 2,
+                   uiOutput("selBattleType")),
+                 # Show a plot of the generated distribution
+                 mainPanel(
+                   
+                   plotlyOutput("testPlot2")),
+                 position = c("right")   
+               )),
+     tabPanel("Page 2"),
+     tabPanel("Page 3")
+    ),
+   
     tags$footer(
       style = ("position:fixed; left:0; bottom:0;"),
       actionButton("references", "References") ,
