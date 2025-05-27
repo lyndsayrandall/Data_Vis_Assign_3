@@ -51,7 +51,7 @@ server <- function(input, output, session) {
     req(input$type)
     plotdmgWRDiff(gamedata, input$type)
     })
-
+  dispAboutModal(input,"about")
   dispRefModal(input,"references")
   dispAccessModal(input,"dbAccess")
   
@@ -100,6 +100,7 @@ ui <- fixedPage(
    
     tags$footer(
       style = ("position:fixed; left:0; bottom:0;"),
+      actionButton("about", "About") ,
       actionButton("references", "References") ,
       actionButton("dbAccess", "Access Database Structure"))
    
