@@ -1,3 +1,8 @@
+# utilFun.R
+# Author: Mark Randall
+# Date: 11 June 2025
+# Utility Functions and Constants
+
 
 # Taken from https://plotly.com/r/cumulative-animations/
 accumulate_by <- function(dat, var) {
@@ -9,7 +14,7 @@ accumulate_by <- function(dat, var) {
   dplyr::bind_rows(dats)
 }#EOFn
 
-retTypeDF <- function(battleType){
+retTypeDF <- function(gamedata, battleType){
   tmp_data <- gamedata %>% 
     filter(Battle.Type == battleType)
 }
@@ -30,3 +35,17 @@ retRdByMonth <- function(typeDF) {
 }#EOFn
 
 
+# COLOUR PALETTES
+# Define a range of colur palettes to be used in the
+# application
+
+
+myBuPu = c(brewer.pal(name="BuPu",n=9))
+myPuBu = c(brewer.pal(name="PuBu",n=9))
+mySpectral = c(brewer.pal(name="Spectral",n=11))
+myPuRd = c(brewer.pal(name="PuRd",n=9))
+myYlGn = c(brewer.pal(name="YlGn",n=9))
+myPaired = c(brewer.pal(name="Paired",n=12))
+myDark2 = c(brewer.pal(name="Dark2",n=8))
+myGreens = c(brewer.pal(name="Greens",n=9))
+myBlues =  c(brewer.pal(name="Blues",n=9))

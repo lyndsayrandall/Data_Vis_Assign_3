@@ -1,3 +1,8 @@
+# Working2.R
+# Author: Mark Randall
+# Date: 11 June 2025
+
+
 library(openxlsx)
 library(readr)
 library(dplyr)
@@ -52,7 +57,7 @@ selBattleType <- function(){
 }
 
 #battleType <- selBattleType()
-battleType <- "Co-op"
+battleType <- "Random"
 
 
 
@@ -170,3 +175,23 @@ testGGPlot5 <- typeDF %>%
                geom_point() +
                facet_grid( ~ Game.Result)
 
+typeDF%>%
+  group_by(Game.Result) %>%
+  do(p=plot_ly(., x = ~WR.Differential, y = ~DMG.Differential, color = ~Game.Result, type = "scatter")) %>%
+  subplot(nrows = 1, shareX = TRUE, shareY = TRUE)
+View(iris)
+
+iris%>%
+  group_by(Species) %>%
+  do(p=plot_ly(., x = ~Sepal.Length, y = ~Sepal.Width, color = ~Species, type = "scatter")) %>%
+  subplot(nrows = 1, shareX = TRUE, shareY = TRUE)
+
+iris%>%
+  group_by(Species) %>%
+  group_map(~ plot_ly(data=., x = ~Sepal.Length, y = ~Sepal.Width, color = ~Species, type = "scatter", mode="markers"), .keep=TRUE) %>%
+  subplot(nrows = 1, shareX = TRUE, shareY=TRUE)
+
+typeDF%>%
+  group_by(Game.Result) %>%
+  group_map(~ plot_ly(data=., x = ~WR.Differential, y = ~DMG.Differential, color = ~Game.Result, type = "scatter", mode="markers"), .keep=TRUE) %>%
+  subplot(nrows = 1, shareX = TRUE, shareY=TRUE)

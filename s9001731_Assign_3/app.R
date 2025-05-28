@@ -1,11 +1,7 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    https://shiny.posit.co/
-#
+# App.R
+# Author: Mark Randall
+# Date: 11 June 2025
+# Engine for Shiny App
 
 library(shiny)
 library(plotly)
@@ -30,26 +26,23 @@ server <- function(input, output, session) {
   source("moduleUI.R")
   source("utilFun.R")
   source("modalsDispCode.R")
-  source("errorPlotsMessages.R")
-  source("dmgWRDiffPlot.R")
+
   
   
   # https://stackoverflow.com/questions/21465411/r-shiny-passing-reactive-to-selectinput-choices
-  output$selBattleType <- renderUI({
+  output$selBattleTypeHuman <- renderUI({
     selectInput("type",
                 "Select Battle Type",
-                gameType$Type,
+                gameType_human$Type,
                 selected = c("Random"))
   })
   
 
   output$testPlot <- renderPlotly({test3});
   output$slideTitle <- renderText({slideTitle})
-  output$testPlot2 <- renderPlotly({
-    
-
+  output$testPlot2 <- renderPlot({
     req(input$type)
-    plotdmgWRDiff(gamedata, input$type)
+    plotdmgWRDiff(gamedata_human, input$type)
     })
   dispAboutModal(input,"about")
   dispRefModal(input,"references")
@@ -87,12 +80,12 @@ ui <- fixedPage(
                  sidebarPanel(
                    "Sidebar",
                    width = 2,
-                   uiOutput("selBattleType")),
+                   uiOutput("selBattleTypeHuman")),
                  # Show a plot of the generated distribution
                  mainPanel(
                    
-                   plotlyOutput("testPlot2")),
-                 position = c("right")   
+                   plotOutput("testPlot2")),
+                 position = c("left")   
                )),
      tabPanel("Page 2"),
      tabPanel("Page 3")
