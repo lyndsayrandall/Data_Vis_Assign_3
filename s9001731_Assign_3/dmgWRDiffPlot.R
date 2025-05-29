@@ -76,6 +76,9 @@ plotdmgWRDiff <- function(gamedata, battleType){
                 layout(annotations = list(text = levels(typeDF$Game.Result)[[count]],
                                           x= 0.5,
                                           y = 1.06,
+                                          bgcolor = paste0(myDark2[[count]],"80"),
+
+                                          bordercolor = "black",
                                           showarrow = FALSE,
                                           xref = "paper",
                                           yref = "paper"))
@@ -96,9 +99,9 @@ plotdmgWRDiff <- function(gamedata, battleType){
                                 showarrow =FALSE
                               ),
                               list(
-                                text = "Average\n Damage\n Differential",
-                                x= -0.155,
-                                y= 0.5,
+                                text = "Average\nDamage\nDifferential",
+                                x= -0.159,
+                                y= 0.57,
                                 xref = "paper",
                                 yref = "paper",
                                 showarrow =FALSE
@@ -110,3 +113,11 @@ plotdmgWRDiff <- function(gamedata, battleType){
   return(facet_plot)
   
 }
+
+
+# bgcolor <- paste0("rgba(",
+#                  rgb(col2rgb(myDark2[[1]])[1], 
+#                      col2rgb(myDark2[[1]])[2], 
+#                      col2rgb(myDark2[[1]])[3],
+#                      maxColorValue = 255,
+#                      alpha = 0.5 ),")")

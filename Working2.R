@@ -211,3 +211,22 @@ for (attr in unique(typeDF$Game.Result)){
   count= count+1
 }
 facet_plot <- subplot(WRDMGDiff_plot_list, nrows = 1, shareX = TRUE, shareY = TRUE  )
+
+
+library(reticulate)
+use_condaenv("base")
+
+pt <- import("plotly")
+cols1 <- 3L
+t1 <-pt$express$scatter(typeDF, x = "WR.Differential", y = "DMG.Differential",
+                        facet_col = "Game.Result", color = "Game.Result",
+                        facet_col_wrap = 3L,
+                        labels = dict(WR.Differential = "Average Win Rate Differential",
+                                      DMG.Differential = "Average Damge Differential"))
+t1 <- t1$update_yaxes()
+
+t2 <- t1$show()
+group_labels <- c('distplot')
+t3 <- pt$express$histogram(typeDF, x = "WR.Differential", nbins = 1000L)
+
+t4 <- t3$show()
