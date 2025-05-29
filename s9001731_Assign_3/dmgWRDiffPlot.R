@@ -65,17 +65,47 @@ plotdmgWRDiff <- function(gamedata, battleType){
                          x = ~WR.Differential,
                          y = ~DMG.Differential,
                          type = "scatter",
-                         mode = "markers") %>%
+                         mode = "markers",
+                         marker= list(color = myDark2[[count]],
+                                      size = 4)) %>%
                 layout(showlegend = FALSE,
                        xaxis = list(title = "",
                                     range = plotXLim),
                        yaxis = list(title = "",
-                                    range = plotYLim))
+                                    range = plotYLim)) %>%
+                layout(annotations = list(text = levels(typeDF$Game.Result)[[count]],
+                                          x= 0.5,
+                                          y = 1.06,
+                                          showarrow = FALSE,
+                                          xref = "paper",
+                                          yref = "paper"))
     
     WRDMGDiff_plot_list[[count]] <- tmp_plot
     count= count+1
   }
-  facet_plot <- subplot(WRDMGDiff_plot_list, nrows = 1, shareX = TRUE, shareY = TRUE  )
+  facet_plot <- subplot(WRDMGDiff_plot_list, nrows = 1, 
+                        shareX = TRUE, shareY = TRUE  ) %>%
+                layout(margin = list(l=95,r=0,b=90,t=40,pad=0),
+                       annotations= list(
+                              list(
+                                text = "Average Win Rate Differential",
+                                x= 0.5,
+                                y= -0.15,
+                                xref = "paper",
+                                yref = "paper",
+                                showarrow =FALSE
+                              ),
+                              list(
+                                text = "Average\n Damage\n Differential",
+                                x= -0.155,
+                                y= 0.5,
+                                xref = "paper",
+                                yref = "paper",
+                                showarrow =FALSE
+                              )
+                         
+                       ))
+
   
   return(facet_plot)
   
