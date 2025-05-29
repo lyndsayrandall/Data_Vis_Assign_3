@@ -195,3 +195,19 @@ typeDF%>%
   group_by(Game.Result) %>%
   group_map(~ plot_ly(data=., x = ~WR.Differential, y = ~DMG.Differential, color = ~Game.Result, type = "scatter", mode="markers"), .keep=TRUE) %>%
   subplot(nrows = 1, shareX = TRUE, shareY=TRUE)
+
+
+count= 1
+WRDMGDiff_plot_list <- list()
+for (attr in unique(typeDF$Game.Result)){
+  tmp_df<- typeDF %>% filter(Game.Result == attr)
+  tmp_plot <- plot_ly( tmp_df,
+                       x = ~WR.Differential,
+                       y = ~DMG.Differential,
+                       type = "scatter",
+                       mode = "markers")
+
+  WRDMGDiff_plot_list[[count]] <- tmp_plot
+  count= count+1
+}
+facet_plot <- subplot(WRDMGDiff_plot_list, nrows = 1, shareX = TRUE, shareY = TRUE  )

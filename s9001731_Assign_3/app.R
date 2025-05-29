@@ -9,6 +9,7 @@ library(bslib)
 library(future)
 library(promises)
 library(shinyBS)
+library(shinyalert)
 
 
 
@@ -26,6 +27,12 @@ server <- function(input, output, session) {
   source("moduleUI.R")
   source("utilFun.R")
   source("modalsDispCode.R")
+  source("toolTipAlertText.R")
+  
+  shinyalert("Overview",
+             type = "info",
+             overview,
+             html = TRUE)
 
   
   
@@ -40,9 +47,9 @@ server <- function(input, output, session) {
 
   output$testPlot <- renderPlotly({test3});
   output$slideTitle <- renderText({slideTitle})
-  output$testPlot2 <- renderPlot({
+  output$testPlot2 <- renderPlotly({
     req(input$type)
-    plotdmgWRDiff(gamedata_human, input$type)
+    plotdmgWRDiff(gameData_human, input$type)
     })
   dispAboutModal(input,"about")
   dispRefModal(input,"references")
@@ -84,7 +91,7 @@ ui <- fixedPage(
                  # Show a plot of the generated distribution
                  mainPanel(
                    
-                   plotOutput("testPlot2")),
+                   plotlyOutput("testPlot2")),
                  position = c("left")   
                )),
      tabPanel("Page 2"),

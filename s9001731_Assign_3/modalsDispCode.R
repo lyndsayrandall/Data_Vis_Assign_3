@@ -8,9 +8,12 @@ observeEvent(input[[value]], {
                   listing HMS ARK ROYAL in order to take off survivors. In HMS_Ark_Royal_sinking_2.jpg (Ed.), jpg (Vol. 761x 
                   571px). Imperial War Museums(collection no. 4700-01): Imperial War Museums.",
                 " ",
-                "This is the second line.",
+                "Wargaming.net. (2012-2025, 2025). World of Warships. Wargaming.net. 
+                    Retrieved 10 May from https://worldofwarships.asia/en/content/game/",
                 " ",
-                "This is the third line.",
+                "Perry Swift. (2025). Potato Alert, A statistics companion app for World Of Warships. razaqq. 
+                    Retrieved 10 May from https://github.com/razaqq/PotatoAlert?tab=readme-ov-file",
+                " ",
           sep = "<br>")),
     footer = tagList(modalButton("Return"))
   ))})    

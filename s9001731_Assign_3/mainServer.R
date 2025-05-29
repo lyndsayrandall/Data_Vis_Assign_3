@@ -33,6 +33,12 @@ gameData <- read.xlsx("../Data/GameData.xlsx")  %>%
             filter(!(is.na(WR.Differential) |
                        Game.Result == "" |
                        Battle.Type == "No Spuds") )
+  
+gameData$Game.Result <- factor(gameData$Game.Result,
+                               levels = c("Win","Loss","Draw"),
+                               labels = c("Win","Loss","Draw"),
+                               ordered = TRUE)
+
 
 humanOpposition <- c("Random", "Ranked", "Clan", "Brawl Clan", "Arms Race", 
                      "Dirigible Derby", "Mode Shuffle", "Convoy", "Brawl","Asymmetric lower")
@@ -42,7 +48,7 @@ gameData_human <- gameData %>%
                     "Arms Race","Convoy","Drigible Derby","Asymmetric lower")
                         ~ "Mode Shuffle",
                     TRUE ~ Battle.Type))
-unique(gameData_human$Battle.Type)
+
 last(gameData$gDate)
 # Find dates outside reference to examine original data base.
 # Then return to access to repair.
