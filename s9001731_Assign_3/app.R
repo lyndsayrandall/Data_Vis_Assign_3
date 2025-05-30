@@ -51,6 +51,11 @@ server <- function(input, output, session) {
     req(input$type)
     plotdmgWRDiff(gameData_human, input$type)
     })
+  
+  output$testPlot3 <- renderPlotly({
+    req(input$type)
+    plotdmgWRHistDens(gameData_human, input$type)
+  })
   dispAboutModal(input,"about")
   dispRefModal(input,"references")
   dispAccessModal(input,"dbAccess")
@@ -90,8 +95,14 @@ ui <- fixedPage(
                    uiOutput("selBattleTypeHuman")),
                  # Show a plot of the generated distribution
                  mainPanel(
-                   
-                   plotlyOutput("testPlot2")),
+                   card(
+                     plotlyOutput("testPlot2")
+                   ),
+                   card(
+                     card_header("test"),
+                     plotlyOutput("testPlot3")
+                   )
+                   ),
                  position = c("left")   
                )),
      tabPanel("Page 2"),

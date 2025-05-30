@@ -1,10 +1,14 @@
+# dmgWRDiffPlot.R
+# Author: Mark Randall
+# Date: 11 June 2025
+# Plots the facetted Scatter plot  average WR Differential
+# versus average Damage Differential
 
-
-plotdmgWRDiff <- function(gamedata, battleType){
+plotdmgWRDiff <- function(gamedata, attrType){
   
-  typeDF <- retTypeDF(gamedata,battleType)
-  # typeDF<- retTypeDF("Brawl")
-  # battleType <- "Random"
+  typeDF <- retTypeDF(gamedata,attrType)
+  # attrType <- "Random"
+  # typeDF<- retTypeDF(gameData_human,attrType)
 
  
   if(plyr::empty(typeDF)){
@@ -44,7 +48,7 @@ plotdmgWRDiff <- function(gamedata, battleType){
   #                  scale_colour_manual(values = myDark2Plot) +
   #                  theme_light() +
   #                  labs(  title = 
-  #                           paste0("WR versus Damage Differential for ", battleType),
+  #                           paste0("WR versus Damage Differential for ", attrType),
   #                         x = "Win Rate Differential",
   #                         y = "Damage\n Differential") +
   #                  theme(
@@ -88,7 +92,7 @@ plotdmgWRDiff <- function(gamedata, battleType){
   }
   facet_plot <- subplot(WRDMGDiff_plot_list, nrows = 1, 
                         shareX = TRUE, shareY = TRUE  ) %>%
-                layout(margin = list(l=95,r=0,b=90,t=40,pad=0),
+                layout(margin = list(l=100,r=0,b=90,t=40,pad=0),
                        annotations= list(
                               list(
                                 text = "Average Win Rate Differential",
@@ -100,7 +104,7 @@ plotdmgWRDiff <- function(gamedata, battleType){
                               ),
                               list(
                                 text = "Average\nDamage\nDifferential",
-                                x= -0.159,
+                                x= -0.13,
                                 y= 0.57,
                                 xref = "paper",
                                 yref = "paper",
@@ -112,12 +116,6 @@ plotdmgWRDiff <- function(gamedata, battleType){
   
   return(facet_plot)
   
-}
+}#EOFn
 
 
-# bgcolor <- paste0("rgba(",
-#                  rgb(col2rgb(myDark2[[1]])[1], 
-#                      col2rgb(myDark2[[1]])[2], 
-#                      col2rgb(myDark2[[1]])[3],
-#                      maxColorValue = 255,
-#                      alpha = 0.5 ),")")

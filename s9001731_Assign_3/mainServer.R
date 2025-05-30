@@ -24,6 +24,7 @@ source("winTotPlot.R")
 source("winRatePlot.R")
 source("errorPlotsMessages.R")
 source("dmgWRDiffPlot.R")
+source("dmgWRHistDensPlot.R")
 
 gameData <- read.xlsx("../Data/GameData.xlsx")  %>%
             mutate(Timestamp = convertToDateTime(Date+Time),

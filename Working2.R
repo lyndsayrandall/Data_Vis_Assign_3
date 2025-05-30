@@ -16,7 +16,7 @@ library(tidyr)
 library(magrittr)
 
 
-gamedata <- read.xlsx("Data/GameData.xlsx")  %>%
+gameData <- read.xlsx("Data/gameData.xlsx")  %>%
   mutate(Timestamp = convertToDateTime(Date+Time),
          gDate = convertToDate(Date),
          gYear = lubridate::year(Timestamp),
@@ -24,10 +24,19 @@ gamedata <- read.xlsx("Data/GameData.xlsx")  %>%
          gHour = lubridate::hour(Timestamp)) %>%
   filter(!(is.na(WR.Differential) | Game.Result == "" ))
 
-chkAllyDmgDiff <- gamedata %>%
+humanOpposition <- c("Random", "Ranked", "Clan", "Brawl Clan", "Arms Race", 
+                     "Dirigible Derby", "Mode Shuffle", "Convoy", "Brawl","Asymmetric lower")
+gameData_human <- gameData %>%
+  filter(Battle.Type %in% humanOpposition) %>%
+  mutate(Battle.Type = case_when( Battle.Type %in% c(
+    "Arms Race","Convoy","Drigible Derby","Asymmetric lower")
+    ~ "Mode Shuffle",
+    TRUE ~ Battle.Type))
+
+chkAllyDmgDiff <- gameData %>%
                   filter(Allies.DMG.Ave <= 20000)
 
-chkOppDmgDif <- gamedata %>%
+chkOppDmgDif <- gameData %>%
   filter((Opp.DMG.Ave < 20000) &
           (Battle.Type %in% c("Random","Ranked","Clan","Brawl Clan","Brawl",
                               "Convoy","Arms Race","Mode Shuffle"))    )
@@ -35,17 +44,17 @@ chkOppDmgDif <- gamedata %>%
 gameType <- read.xlsx("Data/BattleType.xlsx")
 colnames(gameType) <- c("Id", "Type")
 
-last(gamedata$gDate)
+last(gameData$gDate)
 
-last(gamedata$gDate)
+last(gameData$gDate)
 # Find dates outside reference to examine original data base.
 # Then return to access to repair.
-outDate <- gamedata %>% 
+outDate <- gameData %>% 
   filter(gYear < 2021 | gYear > 2025)
 
-str(gamedata)
+str(gameData)
 
-outDate <- gamedata %>%
+outDate <- gameData %>%
   filter(Game.Result == "")
 
 selBattleType <- function(){
@@ -63,7 +72,7 @@ battleType <- "Random"
 
 
 retTypeDF <- function(battleType){
-  tmp_data <- gamedata %>% 
+  tmp_data <- gameData %>% 
     filter(Battle.Type == battleType)
   if(plyr::empty(tmp_data)){
     return("Empty Data Frame")
@@ -230,3 +239,66 @@ group_labels <- c('distplot')
 t3 <- pt$express$histogram(typeDF, x = "WR.Differential", nbins = 1000L)
 
 t4 <- t3$show()
+
+df1 <- diamonds
+
+dens <- with(diamonds, tapply(price, INDEX = cut, density))
+
+df2 <- data.frame(
+  x = unlist(lapply(dens, "[[", "x")),
+  y = unlist(lapply(dens, "[[", "y")),
+  cut = rep(names(dens), each = length(dens[[1]]$x))
+)
+
+dens1 <- with(typeDF, tapply(WR.Differential, INDEX = Battle.Type, density))
+
+df3 <- data.frame(
+  x = unlist(lapply(dens1, "[[", "x")),
+  y = unlist(lapply(dens1, "[[", "y")),
+  Battle.Type = rep(names(dens1), each = length(dens1[[1]]$x))
+)
+
+fig <- plot_ly(df3, x = ~x, y = ~y, color = ~Battle.Type) 
+fig <- fig %>% add_lines()
+
+fig
+
+# histplot <- plot_ly(x= typeDF$WR.Differential, 
+#                     type = "histogram",
+#                     histnorm = "density",
+#                     yaxis = "y1",
+#                     xaxis = "x1")
+# 
+# dens2 <- density(typeDF$WR.Differential)
+# histplot %>%
+#   add_lines(x= dens2$x,
+#             y= dens2$y ,
+#             type = "scatter",
+#             mode="lines",
+#             yaxis = "y2",
+#             xaxis = "x2",
+#             line = list(color = "red")) %>%
+#             layout(yaxis2 = list(overlaying = "y1",
+#                                  side = "right",
+#                                  yref = "y"
+#                                  ),
+#                    xaxis2 = list(overlaying = "x1",
+#                                 side = "top")
+#                    )
+# 
+# str(dens2)
+# str(typeDF$WR.Differential)
+
+
+histDistPlot_GG <- ggplot(typeDF,aes( x= WR.Differential)) +
+                   geom_histogram(aes(y = after_stat(density))) +
+                   geom_density()
+ggplotly(histDistPlot_GG)
+
+quartTypeDF <- quantile(typeDF$WR.Differential, prob= c(.25,.5,.75),
+                        type = 1, na.rm =TRUE)
+
+attrDFIQR <- quartTypeDF[[3]] - quartTypeDF[[1]]
+
+densPlotXLim <- c((quartTypeDF[[1]] - 1.5*(attrDFIQR)),
+                  (quartTypeDF[[3]] + 1.5*(attrDFIQR)))
