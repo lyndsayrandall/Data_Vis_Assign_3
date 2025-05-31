@@ -174,3 +174,31 @@ count(ranData2, WRGP,Game.Result)
 ggplot(ranData2Gp,aes(x= WRGP, y = Prob_Win)) +
   geom_point() +
   geom_line()
+
+
+# dmgWRDiffGGBase <- typeDF %>%
+#                  ggplot(aes(x= WR.Differential, y= DMG.Differential,
+#                             colour = Game.Result)) +
+#                  geom_point(size= 0.2, show.legend = FALSE) +
+#                  geom_hline(yintercept = 0.0, colour= "black",
+#                             alpha= 0.8, lwd = 0.5) +
+#                  geom_vline(xintercept = 0.0, colour= "black",
+#                             alpha= 0.8, lwd= 0.5) +
+#                  scale_x_continuous(limits = plotXLim) +
+#                  scale_y_continuous(limits = plotYLim) +
+#                  facet_wrap2(~ Game.Result, strip = stripPlot) +
+#                  scale_colour_manual(values = myDark2Plot) +
+#                  theme_light() +
+#                  labs(  title = 
+#                           paste0("WR versus Damage Differential for ", attrType),
+#                         x = "Win Rate Differential",
+#                         y = "Damage\n Differential") +
+#                  theme(
+#                        panel.grid.major = element_blank(), 
+#                        panel.grid.minor = element_blank(),
+#                        panel.border = element_blank(),
+#                        axis.ticks.x = element_blank(),
+#                        axis.ticks.y = element_blank(),
+#                        axis.title.x = element_text(angle = 0),
+#                        axis.title.y = element_text(angle = 0)
+#                       )
