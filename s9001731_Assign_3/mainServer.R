@@ -37,6 +37,11 @@ gameData <- read.xlsx("../Data/gameData.xlsx")  %>%
   filter(!(is.na(WR.Differential) | Game.Result == "" ))
 colnames(gameData)[5] <- "ShipId"
 
+gameData$Game.Result <- factor(gameData$Game.Result,
+                               levels = c("Win","Loss","Draw"),
+                               labels = c("Win","Loss","Draw"),
+                               ordered = TRUE)
+
 shipData <- read.xlsx("../Data/Ship Data.xlsx")
 shipType <- read.xlsx("../Data/Ship Type.xlsx")
 

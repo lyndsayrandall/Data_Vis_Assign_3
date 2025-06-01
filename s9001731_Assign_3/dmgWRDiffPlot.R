@@ -7,8 +7,8 @@
 plotdmgWRDiff <- function(gamedata, attrType){
   
   typeDF <- retTypeDF(gamedata,attrType)
-  # attrType <- "Random"
-  # typeDF<- retTypeDF(gameData_human,attrType)
+  attrType <- "Random"
+  typeDF<- retTypeDF(gameData_human,attrType)
 
  
   if(plyr::empty(typeDF)){
@@ -35,7 +35,7 @@ plotdmgWRDiff <- function(gamedata, attrType){
                               
   
   count= 1
- plotWRDmgDiff_plot_list <- list()
+  plotWRDmgDiff_plot_list <- list()
   for (attr in levels(typeDF$Game.Result)) {
     tmp_df <- typeDF %>% filter(Game.Result == attr)
     tmp_plot <- plot_ly( tmp_df,
@@ -54,13 +54,12 @@ plotdmgWRDiff <- function(gamedata, attrType){
                                           x= 0.5,
                                           y = 1.06,
                                           bgcolor = paste0(myDark2[[count]],"80"),
-
                                           bordercolor = "black",
                                           showarrow = FALSE,
                                           xref = "paper",
                                           yref = "paper"))
     
-   plotWRDmgDiff_plot_list[[count]] <- tmp_plot
+    plotWRDmgDiff_plot_list[[count]] <- tmp_plot
     count= count+1
   }#EOFor
   facet_plot <- subplot(plotWRDmgDiff_plot_list, nrows = 1, 
