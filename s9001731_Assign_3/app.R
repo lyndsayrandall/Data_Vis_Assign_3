@@ -70,7 +70,7 @@ server <- function(input, output, session) {
 
 # Define UI for application that draws a histogram
 ui <- fixedPage(
-  
+    
     tags$head(
       tags$script(HTML("
         function resizeWindow() {
@@ -79,7 +79,7 @@ ui <- fixedPage(
       "))
     ),
     tags$body(tags$script(HTML("onload= 'resizeWindow()'"))),
-    
+    withMathJax(),
    
 
     # Application title
@@ -88,8 +88,8 @@ ui <- fixedPage(
     
     tabsetPanel(
       tabPanel("Battle Type",
-               sidebarLayout(
-                 sidebarPanel(
+                 sidebarLayout(
+                   sidebarPanel(
                    "Sidebar",
                    width = 2,
                    uiOutput("selBattleTypeHuman")),
@@ -99,7 +99,6 @@ ui <- fixedPage(
                      plotlyOutput("testPlot2")
                    ),
                    card(
-                     card_header("test"),
                      plotlyOutput("testPlot3")
                    )
                    ),
@@ -113,7 +112,7 @@ ui <- fixedPage(
       style = ("position:fixed; left:0; bottom:0;"),
       actionButton("about", "About") ,
       actionButton("references", "References") ,
-      actionButton("dbAccess", "Access Database Structure"))
+            actionButton("dbAccess", "Access Database Structure"))
    
     )
     

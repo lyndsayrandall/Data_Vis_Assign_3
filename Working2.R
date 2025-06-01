@@ -23,6 +23,16 @@ gameData <- read.xlsx("Data/gameData.xlsx")  %>%
          gMonth = lubridate::month(Timestamp, label =TRUE,abbr = TRUE ),
          gHour = lubridate::hour(Timestamp)) %>%
   filter(!(is.na(WR.Differential) | Game.Result == "" ))
+colnames(gameData)[5] <- "ShipId"
+
+shipData <- read.xlsx("Data/Ship Data.xlsx")
+shipType <- read.xlsx("Data/Ship Type.xlsx")
+
+gameData %<>% left_join(shipData ,
+                        by= c("ShipId" = "ShipId"))
+
+gameData %<>% left_join(shipType ,
+                        by= c("Ship.Type" = "Ship.Type"))
 
 humanOpposition <- c("Random", "Ranked", "Clan", "Brawl Clan", "Arms Race", 
                      "Dirigible Derby", "Mode Shuffle", "Convoy", "Brawl","Asymmetric lower")
@@ -310,34 +320,72 @@ for(attr in histDensVars){
                     (quartTypeDF[[3]] + 3*(attrDFIQR)))
  
   histDistPlot_GG <-  ggplot(typeDF,aes( x = .data[[attr]])) +
-    geom_histogram(aes(y = after_stat(density))) +
+    geom_histogram(aes(y = after_stat(density)), position = "identity") +
     geom_density()+
-    scale_x_continuous(limits = densPlotXLim) +
+    scale_x_continuous(limits = densPlotXLim ,
+                       expand = c(0,0)) +
+    scale_y_continuous(limits = c(0.0,NA) ,
+                       expand = c(0,0),
+                       sec.axis = sec_axis(~.*dim(typeDF)[[1]])
+                      ) +
     theme_light() +
     theme(
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
       axis.title.x = element_blank(),
-      axis.title.y = element_blank())
+      axis.title.y = element_blank(),
+      axis.line = element_line(colour = "black"))
 
 
   histDistPlot <- ggplotly(histDistPlot_GG) %>%
-    layout( margin = list(l=100,r=0,b=90,t=40,pad=0),
+    layout( margin = list(l=100,r=10,b=90,t=40,pad=0),
             annotations= list(
               list(
                 text = paste0("Average ",attr),
                 x= 0.5,
-                y= -0.15,
+                y= -0.095,
                 xref = "paper",
                 yref = "paper",
                 showarrow =FALSE
               ),
               list(
                 text = "Density",
-                x= -0.13,
+                x= -0.2,
                 y= 0.57,
                 xref = "paper",
                 yref = "paper",
                 showarrow =FALSE
               )))
 }
+
+retTypeDF2 <- function(gamedata, queryType, queryAttr){
+  
+  tmp_data <- gamedata %>% 
+    filter(get(queryAttr) == queryType)
+}
+
+queryType <- "Destroyer"
+queryAttr <- "Ship.Type"
+typeDFComb<- retTypeDF2(gameData_human,queryType,queryAttr)
+
+
+# library(ggpubr)
+# library(cowplot)
+# 
+# 
+# phist <- gghistogram(
+#              typeDF, x = "WR.Differential")
+# 
+# pdensity <- ggdensity(
+#   typeDF, x = "WR.Differential") +
+#   
+#   scale_y_continuous(expand = expansion(mult = c(0, 0.05)), position = "right")  +
+#   theme_half_open(11, rel_small = 1) +
+#   rremove("x.axis")+
+#   rremove("xlab") +
+#   rremove("x.text") +
+#   rremove("x.ticks") +
+#   rremove("legend")
+# aligned_plots <- align_plots(phist, pdensity, align="hv")
+# ggdraw(aligned_plots[[1]]) + draw_plot(aligned_plots[[2]])
