@@ -4,6 +4,7 @@
 # Engine for Shiny App
 
 library(shiny)
+library(shinyjs)
 library(plotly)
 library(bslib)
 library(future)
@@ -11,50 +12,58 @@ library(promises)
 library(shinyBS)
 library(shinyalert)
 
-
+source("mainServer.R") 
+source("moduleUI.R")
+source("utilFun.R")
+source("modalsDispCode.R")
+source("toolTipAlertText.R")
 
 
 
 options(shiny.autoreload = TRUE)
 options(shiny.devmode = TRUE)
 
-
+#shipType <- read.xlsx("../Data/Ship Type.xlsx")
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-  
-  source("mainServer.R") 
-  source("moduleUI.R")
-  source("utilFun.R")
-  source("modalsDispCode.R")
-  source("toolTipAlertText.R")
   
   shinyalert("Overview",
              type = "info",
              overview,
              html = TRUE)
-
   
+  output$attr_rad_but <- renderUI({attrRadioButton})
+  output$sel_type_battle <- renderUI({selTypeBattle})
+  output$sel_type_ship <- renderUI({selTypeShip})
   
-  # https://stackoverflow.com/questions/21465411/r-shiny-passing-reactive-to-selectinput-choices
-  output$selBattleTypeHuman <- renderUI({
-    selectInput("type",
-                "Select Battle Type",
-                gameType_human$Type,
-                selected = c("Random"))
-  })
-  
-
+ 
   output$testPlot <- renderPlotly({test3});
   output$slideTitle <- renderText({slideTitle})
+  
+  
   output$testPlot2 <- renderPlotly({
-    req(input$type)
-    plotdmgWRDiff(gameData_human, input$type)
+     req(input$queryTypeBattle,
+         input$queryTypeShip,
+         input$queryAttr)
+    queryType <- if_else(input$queryAttr == "Battle.Type",
+                         input$queryTypeBattle,
+                         input$queryTypeShip)
+    print(paste("query type",queryType)) 
+    print(paste("query Attr", input$queryAttr ))
+    plotdmgWRDiff(gameData_human, queryType,input$queryAttr)
     })
   
   output$testPlot3 <- renderPlotly({
-    req(input$type)
-    plotdmgWRHistDens(gameData_human, input$type)
+     req(input$queryTypeBattle,
+         input$queryTypeShip,
+         input$queryAttr)
+  queryType <- if_else(input$queryAttr == "Battle.Type",
+                       input$queryTypeBattle,
+                       input$queryTypeShip)
+  print(paste("query type",queryType)) 
+  print(paste("query Attr", input$queryAttr ))
+  plotdmgWRHistDens(gameData_human, queryType,input$queryAttr)
   })
   dispAboutModal(input,"about")
   dispRefModal(input,"references")
@@ -70,6 +79,7 @@ server <- function(input, output, session) {
 
 # Define UI for application that draws a histogram
 ui <- fixedPage(
+   useShinyjs(),
     
     tags$head(
       tags$script(HTML("
@@ -87,12 +97,15 @@ ui <- fixedPage(
     # Drop Down
     
     tabsetPanel(
-      tabPanel("Battle Type",
+      tabPanel("Scatter, Histogram, Density",
                  sidebarLayout(
                    sidebarPanel(
-                   "Sidebar",
+                   uiOutput("attr_rad_but"),
+                   uiOutput("sel_type_battle"),
+                   uiOutput("sel_type_ship"),
                    width = 2,
-                   uiOutput("selBattleTypeHuman")),
+                    ),
+                   
                  # Show a plot of the generated distribution
                  mainPanel(
                    card(
@@ -107,6 +120,7 @@ ui <- fixedPage(
      tabPanel("Page 2"),
      tabPanel("Page 3")
     ),
+   
    
     tags$footer(
       style = ("position:fixed; left:0; bottom:0;"),

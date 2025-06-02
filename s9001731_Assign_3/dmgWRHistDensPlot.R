@@ -5,12 +5,12 @@
 # and average Damage Differential
 
 
-plotdmgWRHistDens <- function(gamedata, attrType){
+plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
   
-  typeDF <- retTypeDF(gamedata,attrType)
+  typeDF <- retTypeDF(gamedata,queryType,queryAttr)
   
-  # attrType <- "Random"
-  # typeDF<- retTypeDF(gameData_human,attrType)
+  # attrType <- "Destroyer"
+  # typeDF<- retTypeDF(gameData_human,attrType,"Battle.Type")
   
   if(plyr::empty(typeDF)){
     errPlot <- errorPlotFig()

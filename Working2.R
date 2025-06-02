@@ -14,6 +14,17 @@ library(ggplot2)
 library(plotly)
 library(tidyr)
 library(magrittr)
+library(RColorBrewer)
+
+myBuPu = c(brewer.pal(name="BuPu",n=9))
+myPuBu = c(brewer.pal(name="PuBu",n=9))
+mySpectral = c(brewer.pal(name="Spectral",n=11))
+myPuRd = c(brewer.pal(name="PuRd",n=9))
+myYlGn = c(brewer.pal(name="YlGn",n=9))
+myPaired = c(brewer.pal(name="Paired",n=12))
+myDark2 = c(brewer.pal(name="Dark2",n=8))
+myGreens = c(brewer.pal(name="Greens",n=9))
+myBlues =  c(brewer.pal(name="Blues",n=9))
 
 
 gameData <- read.xlsx("Data/gameData.xlsx")  %>%
@@ -365,9 +376,80 @@ retTypeDF2 <- function(gamedata, queryType, queryAttr){
     filter(get(queryAttr) == queryType)
 }
 
-queryType <- "Destroyer"
+queryType <- "Battleship"
 queryAttr <- "Ship.Type"
 typeDFComb<- retTypeDF2(gameData_human,queryType,queryAttr)
+
+plotXLim <- c((min(typeDFComb$WR.Differential) - 1),
+              (max(typeDFComb$WR.Differential) + 1))
+plotYLim <- c((min(typeDFComb$DMG.Differential) - 1),
+              (max(typeDFComb$DMG.Differential) + 1))
+
+numOfResults <- length(unique(typeDFComb$Game.Result))
+
+# if (numOfResults > 2){
+#   stripPlot <- ggh4x::strip_themed(background_x = 
+#                                      elem_list_rect(fill = myDark2[1:numOfResults]))
+#   myDark2Plot <- myDark2[1:numOfResults] 
+# } else {
+#   stripPlot <- ggh4x::strip_themed(background_x = 
+#                                      elem_list_rect(fill = myDark2[2:(numOfResults+1)]))
+#   myDark2Plot <- myDark2[2:(numOfResults+1)]
+# }
+
+
+count= 1
+plotWRDmgDiff_plot_list2 <- list()
+for (attr in levels(typeDFComb$Game.Result)) {
+  tmp_df <- typeDFComb %>% filter(Game.Result == attr)
+  tmp_plot <- plot_ly( tmp_df,
+                       x = ~WR.Differential,
+                       y = ~DMG.Differential,
+                       type = "scatter",
+                       mode = "markers",
+                       marker= list(color = myDark2[[count]],
+                                    size = 4)) %>%
+    layout(showlegend = FALSE,
+           xaxis = list(title = "",
+                        range = plotXLim),
+           yaxis = list(title = "",
+                        range = plotYLim)) %>%
+    layout(annotations = list(text = levels(typeDF$Game.Result)[[count]],
+                              x= 0.5,
+                              y = 1.06,
+                              bgcolor = paste0(myDark2[[count]],"80"),
+                              bordercolor = "black",
+                              showarrow = FALSE,
+                              xref = "paper",
+                              yref = "paper"))
+  
+  plotWRDmgDiff_plot_list[[count]] <- tmp_plot
+  count= count+1
+}#EOFor
+facet_plot <- subplot(plotWRDmgDiff_plot_list2, nrows = 1, 
+                      shareX = TRUE, shareY = TRUE  ) %>%
+  layout(margin = list(l=100,r=0,b=90,t=40,pad=0),
+         annotations= list(
+           list(
+             text = "Average Win Rate Differential",
+             x= 0.5,
+             y= -0.15,
+             xref = "paper",
+             yref = "paper",
+             showarrow =FALSE
+           ),
+           list(
+             text = "Average\nDamage\nDifferential",
+             x= -0.13,
+             y= 0.57,
+             xref = "paper",
+             yref = "paper",
+             showarrow =FALSE
+           )
+           
+         ))
+
+
 
 
 # library(ggpubr)

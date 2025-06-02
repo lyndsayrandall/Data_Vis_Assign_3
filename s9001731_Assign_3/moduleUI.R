@@ -1,20 +1,28 @@
-library(openxlsx)
-library(readr)
-library(dplyr)
 
 
 slideTitle <- "Changing source"
 
+listType <- as.list(gameType_human$Type)
 
-gameType <- read.xlsx("../Data/BattleType.xlsx") %>%
-            filter(!(BattleType == "No Spuds"))
-colnames(gameType) <- c("Id", "Type")
 
-gameType_human <- gameType %>%
-                  filter(Type %in% humanOpposition) %>%
-                  mutate(Type = case_when( Type %in% c(
-                    "Arms Race","Convoy","Drigible Derby","Asymmetric lower")
-                         ~ "Mode Shuffle",
-                    TRUE ~ Type)) %>%
-                  distinct(Type, .keep_all = TRUE)
-                  
+attrRadioButton <- radioButtons("queryAttr", "Query Game Attribute",
+                                choices = c("Battle" = "Battle.Type",
+                                            "Ship" = "Ship.Type"),
+                                inline = TRUE,
+                                selected = "Battle.Type",
+                                width = "100%")
+
+
+selTypeBattle <- selectizeInput( "queryTypeBattle",
+                                  label = "Query Battle Type",
+                                  choices = c(unique(gameType_human$Type)),
+                                  multiple = FALSE,
+                                  selected = c("Random")
+                                  )
+
+selTypeShip <- selectizeInput( "queryTypeShip",
+                                label = "Query Ship Type",
+                                choices = c(unique(shipType$Ship.Type)),
+                                multiple = FALSE,
+                                selected = c("Destroyer")
+                              )

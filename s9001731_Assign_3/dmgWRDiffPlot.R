@@ -4,11 +4,11 @@
 # Plots the facetted Scatter plot  average WR Differential
 # versus average Damage Differential
 
-plotdmgWRDiff <- function(gamedata, attrType){
+plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
   
-  typeDF <- retTypeDF(gamedata,attrType)
-  attrType <- "Random"
-  typeDF<- retTypeDF(gameData_human,attrType)
+  typeDF <- retTypeDF(gamedata,queryType,queryAttr)
+  # attrType <- "Random"
+  # typeDF<- retTypeDF(gameData_human,attrType,"Battle.Type")
 
  
   if(plyr::empty(typeDF)){

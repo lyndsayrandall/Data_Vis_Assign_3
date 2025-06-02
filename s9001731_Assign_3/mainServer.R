@@ -26,9 +26,13 @@ source("errorPlotsMessages.R")
 source("dmgWRDiffPlot.R")
 source("dmgWRHistDensPlot.R")
 
-options(scipen=10000)
+options(scipen = 9999)
 
-gameData <- read.xlsx("../Data/gameData.xlsx")  %>%
+humanOpposition <- c("Random", "Ranked", "Clan", "Brawl Clan", "Arms Race", 
+                     "Dirigible Derby", "Mode Shuffle", "Convoy", "Brawl",
+                     "Asymmetric lower")
+
+gameData <- read.xlsx("Data/gameData.xlsx")  %>%
   mutate(Timestamp = convertToDateTime(Date+Time),
          gDate = convertToDate(Date),
          gYear = lubridate::year(Timestamp),
@@ -42,8 +46,21 @@ gameData$Game.Result <- factor(gameData$Game.Result,
                                labels = c("Win","Loss","Draw"),
                                ordered = TRUE)
 
-shipData <- read.xlsx("../Data/Ship Data.xlsx")
-shipType <- read.xlsx("../Data/Ship Type.xlsx")
+gameType <- read.xlsx("Data/BattleType.xlsx") %>%
+  filter(!(BattleType == "No Spuds"))
+colnames(gameType) <- c("Id", "Type")
+
+gameType_human <- gameType %>%
+  filter(Type %in% humanOpposition) %>%
+  mutate(Type = case_when( Type %in% c(
+    "Arms Race","Convoy","Drigible Derby","Asymmetric lower")
+    ~ "Mode Shuffle",
+    TRUE ~ Type)) %>%
+  distinct(Type, .keep_all = TRUE)
+
+shipData <- read.xlsx("Data/Ship Data.xlsx")
+
+shipType <- read.xlsx("Data/Ship Type.xlsx")
 
 gameData %<>% left_join(shipData ,
                         by= c("ShipId" = "ShipId"))
@@ -51,8 +68,6 @@ gameData %<>% left_join(shipData ,
 gameData %<>% left_join(shipType ,
                         by= c("Ship.Type" = "Ship.Type"))
 
-humanOpposition <- c("Random", "Ranked", "Clan", "Brawl Clan", "Arms Race", 
-                     "Dirigible Derby", "Mode Shuffle", "Convoy", "Brawl","Asymmetric lower")
 gameData_human <- gameData %>%
   filter(Battle.Type %in% humanOpposition) %>%
   mutate(Battle.Type = case_when( Battle.Type %in% c(

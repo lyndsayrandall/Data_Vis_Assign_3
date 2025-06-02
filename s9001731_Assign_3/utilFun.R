@@ -14,9 +14,10 @@ accumulate_by <- function(dat, var) {
   dplyr::bind_rows(dats)
 }#EOFn
 
-retTypeDF <- function(gamedata, battleType){
+retTypeDF <- function(gamedata, queryType, queryAttr){
+  
   tmp_data <- gamedata %>% 
-    filter(Battle.Type == battleType)
+    filter(get(queryAttr) == queryType)
 }
 
 retRdByMonth <- function(typeDF) {

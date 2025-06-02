@@ -50,16 +50,16 @@ dispAboutModal <- function(input,value) {
                      width = "100%"
                  ))),
         column(11,
-               HTML(paste("World of Warships is a 'free' multiplayer on line game developed by Wargaming. 
+               HTML(paste0("World of Warships is a 'free' multiplayer on line game developed by Wargaming. 
                The game was annouced as World of Battleships to complement two other games in the wargaming stable. 
                This annoucement occured 16 August 2011. The game conducted a closed beta testing 12 March 2015 
                with a name change of World of Warships(2012). Open beta testing commenced 2 July 2015. 
                The microsoft windows official launch was 17 September 2015 and in the Microsoft Store and Steam 
-               15 November 2015.",
+               15 November 2015. ",
                "The Game genre is considered massively multiplayer online(MMO)/Vehicular Combat Game/
                third person shooter(TPS). It has games clients for the following
                platforms Microsoft Windows, macOS (discontinued), iOS, Android, PlayStation 4, PlayStation 5, 
-               Xbox One, Xbox Series X/S.",
+               Xbox One, Xbox Series X/S. ",
                "'Players control warships of choice and can battle other random players on the server, 
                play cooperative battles against bots, or participate in an advanced player versus environment 
                (PvE) battle mode. For the most skilled players, two seasonal competitive modes are also available.'",
