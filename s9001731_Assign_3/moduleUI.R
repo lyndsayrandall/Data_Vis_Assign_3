@@ -1,6 +1,12 @@
 
 
-slideTitle <- "Changing source"
+slideTitle <- "Where the Wins are!!! World of Warships."
+sideImage <- div( style = "height:10%;",
+              tags$img(src = base64enc::dataURI(file = 'Images/game.ico',
+                                                mime = 'image/vnd.microsoft.icon'),
+                       alt='WOWS Icon SVG',
+                       width = "100%"
+              ))
 
 listType <- as.list(gameType_human$Type)
 

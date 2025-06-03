@@ -11,6 +11,8 @@ library(future)
 library(promises)
 library(shinyBS)
 library(shinyalert)
+library(shinyWidgets)
+library(shinytitle)
 
 source("mainServer.R") 
 source("moduleUI.R")
@@ -32,55 +34,83 @@ server <- function(input, output, session) {
              type = "info",
              overview,
              html = TRUE)
-  
+  #Slide Title
+  output$slideTitle <- renderText({slideTitle})
+  output$slideImage <- renderImage({slideImage})
+  # For Tab1
   output$attr_rad_but <- renderUI({attrRadioButton})
   output$sel_type_battle <- renderUI({selTypeBattle})
   output$sel_type_ship <- renderUI({selTypeShip})
+  output$scatterWRDMG <- renderPlotly({
+    req(input$queryTypeBattle,
+        input$queryTypeShip,
+        input$queryAttr)
+    queryType <- if_else(input$queryAttr == "Battle.Type",
+                         input$queryTypeBattle,
+                         input$queryTypeShip)
+    plotdmgWRDiff(gameData_human, queryType,input$queryAttr)
+  })
+  
+  output$histDensWRDMG <- renderPlotly({
+    req(input$queryTypeBattle,
+        input$queryTypeShip,
+        input$queryAttr)
+    queryType <- if_else(input$queryAttr == "Battle.Type",
+                         input$queryTypeBattle,
+                         input$queryTypeShip)
+    plotdmgWRHistDens(gameData_human, queryType,input$queryAttr)
+  })
+  
   #For Tab 2
   output$attr_rad_but2 <- renderUI({attrRadioButton2})
   output$sel_type_battle2 <- renderUI({selTypeBattle2})
   output$sel_type_ship2 <- renderUI({selTypeShip2})
- 
-  output$testPlot <- renderPlotly({test3});
-  output$slideTitle <- renderText({slideTitle})
-  
-  
-  output$scatterWRDMG <- renderPlotly({
-     req(input$queryTypeBattle,
-         input$queryTypeShip,
-         input$queryAttr)
-    queryType <- if_else(input$queryAttr == "Battle.Type",
-                         input$queryTypeBattle,
-                         input$queryTypeShip)
-    print(paste("query type",queryType)) 
-    print(paste("query Attr", input$queryAttr ))
-    plotdmgWRDiff(gameData_human, queryType,input$queryAttr)
-    })
-  
-  output$histDensWRDMG <- renderPlotly({
-     req(input$queryTypeBattle,
-         input$queryTypeShip,
-         input$queryAttr)
-  queryType <- if_else(input$queryAttr == "Battle.Type",
-                       input$queryTypeBattle,
-                       input$queryTypeShip)
-  print(paste("query type",queryType)) 
-  print(paste("query Attr", input$queryAttr ))
-  plotdmgWRHistDens(gameData_human, queryType,input$queryAttr)
-  })
-  
-  output$testPlot <- renderPlotly({
+
+  output$timeWR <- renderPlotly({
+    input$queryTypeBattle2
+    input$queryTypeShip2
+    input$queryAttr2
     req(input$queryTypeBattle2,
         input$queryTypeShip2,
         input$queryAttr2)
     queryType2 <- if_else(input$queryAttr2 == "Battle.Type",
                          input$queryTypeBattle2,
                          input$queryTypeShip2)
-    print(paste("query type",queryType2)) 
-    print(paste("query Attr", input$queryAttr2 ))
-    plotdmgWRHistDens(gameData_human, queryType2,input$queryAttr2)
-    
+    # Create 0-row data frame which will be used to store data
+    dat <- data.frame(x = numeric(0), y = numeric(0))
+    withProgress(message = 'Making plot', value = 0, {
+      # Number of times we'll go through the loop
+      n <- 10
+      
+      for (i in 1:n) {
+        # Each time through the loop, add another row of data. This is
+        # a stand-in for a long-running computation.
+        dat <- rbind(dat, data.frame(x = rnorm(1), y = rnorm(1)))
+        
+        # Increment the progress bar, and update the detail text.
+        incProgress(1/n, detail = paste("Doing part", i))
+        
+        # Pause for 0.1 seconds to simulate a long computation.
+        Sys.sleep(0.3)
+      }
+    })
+    plotCumWin(gameData_human, queryType2,input$queryAttr2)
     });
+  output$timeTotal <- renderPlotly({
+    input$queryTypeBattle2
+    input$queryTypeShip2
+    input$queryAttr2
+    req(input$queryTypeBattle2,
+        input$queryTypeShip2,
+        input$queryAttr2)
+    queryType2 <- if_else(input$queryAttr2 == "Battle.Type",
+                          input$queryTypeBattle2,
+                          input$queryTypeShip2)
+    plotWinTot(gameData_human, queryType2,input$queryAttr2)
+    
+  });
+  
+  # For common footer
   dispAboutModal(input,"about")
   dispRefModal(input,"references")
   dispAccessModal(input,"dbAccess")
@@ -96,6 +126,9 @@ server <- function(input, output, session) {
 # Define UI for application that draws a histogram
 ui <- fixedPage(
    useShinyjs(),
+   title = "WOWS DATA tertius_keen",
+   use_shiny_title(),
+   busy_window_title(),
     
     tags$head(
       tags$script(HTML("
@@ -110,6 +143,7 @@ ui <- fixedPage(
 
     # Application title
     titlePanel(textOutput("slideTitle")),
+               
     # Drop Down
     
     tabsetPanel(
@@ -145,10 +179,10 @@ ui <- fixedPage(
                 # Show a plot of the generated distribution
                 mainPanel(
                   card(
-                    plotlyOutput("testPlot")
+                    plotlyOutput("timeWR")
                   ),
                   card(
-                    plotlyOutput("testPlot3")
+                    plotlyOutput("timeTotal")
                   )
                 ),
                 position = c("left")   

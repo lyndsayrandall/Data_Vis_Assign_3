@@ -87,7 +87,7 @@ selBattleType <- function(){
 }
 
 #battleType <- selBattleType()
-battleType <- "Random"
+battleType <- "Brawl Clan"
 
 
 
@@ -124,28 +124,113 @@ rd_by_month <- typeDF %>%
             Win_Percent = if_else(Total > 1,(Win/Total)*100, NA)) %>%
   ungroup() %>%
   filter(!(is.na(gYear))) %>%
-  mutate(gDate = lubridate::ym(paste0(gYear,gMonth)))
+  mutate(gDate = lubridate::ym(paste0(gYear,gMonth))) %>%
+  distinct()
 
+rd_by_month_All <- gameData_human %>%
+  group_by(gYear, gMonth) %>%
+  summarise(Win = sum(Game.Result == "Win"),
+            Loss = sum(Game.Result == "Loss" |
+                         Game.Result == "Draw"),
+            Total = Win + Loss,
+            Win_Percent = if_else(Total > 1,(Win/Total)*100, NA)) %>%
+  ungroup() %>%
+  filter(!(is.na(gYear))) %>%
+  mutate(gDate = lubridate::ym(paste0(gYear,gMonth))) %>%
+  distinct()
 
-minDate <- min(rd_by_month$gDate)
-maxDate <- max(rd_by_month$gDate)
+testComb <- rd_by_month_All %>%
+            left_join(rd_by_month,
+                      by = c("gDate","gMonth","gYear")) %>%
+            mutate_if(is.numeric,coalesce,0)
+
+minDate <- min(rd_by_month_All$gDate)- months(1)
+maxDate <- max(rd_by_month_All$gDate)
 
 rd_Frames <- rd_by_month %>% 
   accumulate_by(~gDate) %>%
   mutate(frame = as.numeric(frame))
 str(rd_Frames$frame)
 
-cumWinPlot <- rd_Frames %>%
+rd_Frames_All <- rd_by_month_All %>%
+  accumulate_by(~gDate) %>%
+  mutate(frame = as.numeric(frame))
+test_frames_all <- testComb %>%
+  accumulate_by(~gDate) %>%
+  mutate(frame = as.numeric(frame))
+
+
+cumWinPlot <- test_frames_all %>%
   plot_ly() %>%
   add_trace(
     x= ~gDate,
-    y= ~Win_Percent,
+    y= ~Win_Percent.y,
     frame = ~frame,
     type= "scatter",
     mode= "lines+markers", 
     line = list(simplyfy = F),
     showlegend = FALSE) %>%           
   layout(xaxis = list(range= c(minDate,maxDate)))
+
+cumWinPlot_All <- test_frames_all %>%
+                  plot_ly() %>%
+                  add_trace(
+                    x= ~gDate,
+                    y= ~Win_Percent.x,
+                    frame = ~frame,
+                    type= "scatter",
+                    mode= "lines+markers",
+                    line = list(simplyfy = F),
+                    showlegend = FALSE)  %>%           
+                    layout(xaxis = list(range= c(minDate,maxDate)))
+
+testSlider <- test_frames_all %>%
+              plot_ly()%>%
+              add_trace(
+                x= ~gDate,
+                y= ~Win_Percent.x,
+                frame = ~frame,
+                type= "scatter",
+                mode= "lines+markers",
+                line = list(simplyfy = F),
+                showlegend = TRUE) %>%
+              add_trace(
+                x= ~gDate,
+                y= ~Win_Percent.y,
+                frame = ~frame,
+                type= "scatter",
+                mode= "lines+markers",
+                line = list(simplyfy = F),
+                showlegend = T)  %>%           
+                layout(xaxis = list(range= c(minDate,maxDate)))
+
+# p <- plot_ly(
+#   data = mtcars,
+#   x = ~hp,
+#   y = ~drat,
+#   type = "scatter",
+#   mode = "markers",
+#   color = ~ as.factor(cyl)
+# )
+# 
+# pb <- plotly_build(p)
+
+
+pb<- plotly_build(testSlider)
+
+traceNames <- list("Total Win Percent ",
+                   paste(battleType,"Win Percent"))
+for(i in 1:length(traceNames)){
+  pb$x$data[[i]]$name <- traceNames[[pb$x$data[[i]]$name]]
+}
+pb$x$data[[i]]$name <-traceNames[[1]]
+
+
+timeWRPlot <- subplot(cumWinPlot,cumWinPlot_All , nrows =2,
+                      shareX = TRUE, shareY = TRUE,
+                      margin = c(0.1,0.05,0.1,0.00)) %>%
+  layout(xaxis = list(range= c(minDate,maxDate)),
+         yaxis = list(range= c(0,100)))
 
 wrDiffData <- typeDF %>%
   filter(Game.Result != "") %>%
