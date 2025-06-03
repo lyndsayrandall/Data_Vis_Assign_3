@@ -36,13 +36,16 @@ server <- function(input, output, session) {
   output$attr_rad_but <- renderUI({attrRadioButton})
   output$sel_type_battle <- renderUI({selTypeBattle})
   output$sel_type_ship <- renderUI({selTypeShip})
-  
+  #For Tab 2
+  output$attr_rad_but2 <- renderUI({attrRadioButton2})
+  output$sel_type_battle2 <- renderUI({selTypeBattle2})
+  output$sel_type_ship2 <- renderUI({selTypeShip2})
  
   output$testPlot <- renderPlotly({test3});
   output$slideTitle <- renderText({slideTitle})
   
   
-  output$testPlot2 <- renderPlotly({
+  output$scatterWRDMG <- renderPlotly({
      req(input$queryTypeBattle,
          input$queryTypeShip,
          input$queryAttr)
@@ -54,7 +57,7 @@ server <- function(input, output, session) {
     plotdmgWRDiff(gameData_human, queryType,input$queryAttr)
     })
   
-  output$testPlot3 <- renderPlotly({
+  output$histDensWRDMG <- renderPlotly({
      req(input$queryTypeBattle,
          input$queryTypeShip,
          input$queryAttr)
@@ -65,6 +68,19 @@ server <- function(input, output, session) {
   print(paste("query Attr", input$queryAttr ))
   plotdmgWRHistDens(gameData_human, queryType,input$queryAttr)
   })
+  
+  output$testPlot <- renderPlotly({
+    req(input$queryTypeBattle2,
+        input$queryTypeShip2,
+        input$queryAttr2)
+    queryType2 <- if_else(input$queryAttr2 == "Battle.Type",
+                         input$queryTypeBattle2,
+                         input$queryTypeShip2)
+    print(paste("query type",queryType2)) 
+    print(paste("query Attr", input$queryAttr2 ))
+    plotdmgWRHistDens(gameData_human, queryType2,input$queryAttr2)
+    
+    });
   dispAboutModal(input,"about")
   dispRefModal(input,"references")
   dispAccessModal(input,"dbAccess")
@@ -109,15 +125,34 @@ ui <- fixedPage(
                  # Show a plot of the generated distribution
                  mainPanel(
                    card(
-                     plotlyOutput("testPlot2")
+                     plotlyOutput("scatterWRDMG")
                    ),
                    card(
-                     plotlyOutput("testPlot3")
+                     plotlyOutput("histDensWRDMG")
                    )
                    ),
                  position = c("left")   
                )),
-     tabPanel("Page 2"),
+     tabPanel("Win Rate over Time",
+              sidebarLayout(
+                sidebarPanel(
+                  uiOutput("attr_rad_but2"),
+                  uiOutput("sel_type_battle2"),
+                  uiOutput("sel_type_ship2"),
+                  width = 2,
+                ),
+                
+                # Show a plot of the generated distribution
+                mainPanel(
+                  card(
+                    plotlyOutput("testPlot")
+                  ),
+                  card(
+                    plotlyOutput("testPlot3")
+                  )
+                ),
+                position = c("left")   
+              )),
      tabPanel("Page 3")
     ),
    
