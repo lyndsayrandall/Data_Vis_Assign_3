@@ -138,6 +138,7 @@ server <- function(input, output, session) {
 
 # Define UI for application that draws a histogram
 ui <- fixedPage(
+  #tags$head(tags$link(rel="stylesheet", type="text/css", href="stylesheet.css")),
    useShinyjs(),
    title = "WOWS DATA tertius_keen",
    use_shiny_title(),
@@ -187,7 +188,8 @@ ui <- fixedPage(
      tabPanel(title = "Win Rate over Time",
               sidebarLayout(
                 sidebarPanel(
-                  textOutput("tab2Title"),
+                  tags$div(HTML(paste("<h4><b>",textOutput("tab2Title"),
+                                      "</b></h4><br>"))),
                   uiOutput("attr_rad_but2"),
                   uiOutput("sel_type_battle2"),
                   uiOutput("sel_type_ship2"),
@@ -201,11 +203,13 @@ ui <- fixedPage(
                   ),
                   card(
                     plotlyOutput("timeTotal")
-                  )
+                  ),
+                style = "margin: 0 ;"
                 ),
                 position = c("left")   
               )),
-     tabPanel("Page 3")
+     tabPanel("Page 3"),
+    
     ),
    
    
@@ -213,7 +217,8 @@ ui <- fixedPage(
       style = ("position:fixed; left:0; bottom:0;"),
       actionButton("about", "About") ,
       actionButton("references", "References") ,
-            actionButton("dbAccess", "Access Database Structure"))
+            actionButton("dbAccess", "Access Database Structure")),
+   style = "margin: 0 ; padding : 0 1% 0 1%; width : 95vw;"
    
     )
     
@@ -223,7 +228,7 @@ ui <- fixedPage(
 
 
 # Run the application 
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server )
 
 runGadget(shinyApp(ui = ui, server = server) , 
           viewer =browserViewer(browser = getOption("browser")))

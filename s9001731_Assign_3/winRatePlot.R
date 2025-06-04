@@ -60,12 +60,39 @@ plotCumWin <- function(gamedata,queryType,queryAttr){
                                           '%{y:.2f}% <br>' ),
                     line = list(simplyfy = F),
                     showlegend = F)  %>%           
-                  layout(xaxis = list(range = c(minDate,maxDate),
-                                      title = "",
-                                      rangeslider = list(c(minDate,maxDate))),
-                         yaxis = list(range = c(minWRPercent, 
+                  layout( margin = list(l = 100,r = 0,b = 90,t = 40,pad = 0),
+                          annotations= list(
+                            list(
+                              text = paste0("Win Rates Total and ", queryType) ,
+                              x= 0.45,
+                              y= -0.14,
+                              xref = "paper",
+                              yref = "paper",
+                              xanchor = "center",
+                              yanchor = "center",
+                              showarrow =FALSE ,
+                              font = list(size = 15)
+                            ),
+                            list(
+                              text = "Percentage",
+                              x= -0.13,
+                              y= 1.05,
+                              xref = "paper",
+                              yref = "paper",
+                              showarrow =FALSE,
+                              font = list(size = 15)
+                            )),
+                    
+                           xaxis = list(range = c(minDate,maxDate),
+                                      title = ""
+                                      ),
+                            yaxis = list(range = c(minWRPercent, 
                                                 maxWRPercent),
-                                      title = ""))
+                                      title = "")) %>%
+                  animation_slider(hide = TRUE) %>%
+                  animation_button(x = 1.1, xanchor = "right",
+                                 y = -0.01, yanchor = "bottom") 
+    
     return(timeWRPlot)
 }
 

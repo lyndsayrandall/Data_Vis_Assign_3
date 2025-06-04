@@ -161,6 +161,14 @@ test_frames_all <- testComb %>%
 
 chk1 <- test_frames_all[,c(7,12)]
 
+steps_slider_list <- list()
+
+for (posn in 1:dim(test_frames_all)[[1]]) {
+  
+  steps_slider_list[[posn]] <- list(args= list(name = test_frames_all[posn,7] ))
+  
+}
+
 
 
 cumWinPlot <- test_frames_all %>%
@@ -205,7 +213,10 @@ testSlider <- test_frames_all %>%
                 mode= "lines+markers",
                 line = list(simplyfy = F),
                 showlegend = T)  %>%           
-                layout(xaxis = list(range= c(minDate,maxDate)))
+                layout(xaxis = list(range= c(minDate,maxDate))) %>%
+              animation_slider(
+                step = steps_slider_list
+              )
 
 # p <- plot_ly(
 #   data = mtcars,
