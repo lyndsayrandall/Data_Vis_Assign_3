@@ -8,6 +8,21 @@ sideImage <- div( style = "height:10%;",
                        width = "100%"
               ))
 
+tab_1_title <- function(queryTypeBattle,queryTypeShip,queryAttr){
+  msg_tab_1<- paste0("Scatter, Histogram, Density: \n",
+                      if_else(queryAttr == "Battle.Type",queryTypeBattle,
+                              queryTypeShip),
+                      " in ",if_else(queryAttr == "Battle.Type","Battle","Ship"))
+  return(msg_tab_1)
+}#EOFn
+
+tab_2_title <- function(queryTypeBattle2,queryTypeShip2,queryAttr2){
+  msg_tab_2<- paste0("Win Rate over Time: ",
+                     if_else(queryAttr2 == "Battle.Type",queryTypeBattle2,
+                             queryTypeShip2),
+                     " in ",if_else(queryAttr2 == "Battle.Type","Battle","Ship"))
+  return(msg_tab_2)
+}#EOFn
 listType <- as.list(gameType_human$Type)
 
 

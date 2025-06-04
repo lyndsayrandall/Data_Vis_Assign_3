@@ -37,7 +37,15 @@ server <- function(input, output, session) {
   #Slide Title
   output$slideTitle <- renderText({slideTitle})
   output$slideImage <- renderImage({slideImage})
+  
   # For Tab1
+  
+  output$tab1Title <- renderText({
+          req(input$queryTypeBattle,
+              input$queryTypeShip,
+              input$queryAttr)
+          tab_1_title(input$queryTypeBattle,input$queryTypeShip,
+                           input$queryAttr)})
   output$attr_rad_but <- renderUI({attrRadioButton})
   output$sel_type_battle <- renderUI({selTypeBattle})
   output$sel_type_ship <- renderUI({selTypeShip})
@@ -62,6 +70,14 @@ server <- function(input, output, session) {
   })
   
   #For Tab 2
+  output$tab2Title <- renderText({
+          req(input$queryTypeBattle2,
+              input$queryTypeShip2,
+              input$queryAttr2)
+          tab_2_title(input$queryTypeBattle2,input$queryTypeShip2,
+                input$queryAttr2)
+          })
+  
   output$attr_rad_but2 <- renderUI({attrRadioButton2})
   output$sel_type_battle2 <- renderUI({selTypeBattle2})
   output$sel_type_ship2 <- renderUI({selTypeShip2})
@@ -116,9 +132,6 @@ server <- function(input, output, session) {
   dispAccessModal(input,"dbAccess")
   
 
-
- 
-  
 }#EOServer Function
 
 
@@ -147,12 +160,16 @@ ui <- fixedPage(
     # Drop Down
     
     tabsetPanel(
-      tabPanel("Scatter, Histogram, Density",
+      
+      tabPanel(title = "Scatter, Histogram, Density",
                  sidebarLayout(
                    sidebarPanel(
+                   tags$div(HTML(paste("<h4><b>",textOutput("tab1Title"),
+                                       "</b></h4><br>"))),
                    uiOutput("attr_rad_but"),
                    uiOutput("sel_type_battle"),
                    uiOutput("sel_type_ship"),
+                   
                    width = 2,
                     ),
                    
@@ -167,9 +184,10 @@ ui <- fixedPage(
                    ),
                  position = c("left")   
                )),
-     tabPanel("Win Rate over Time",
+     tabPanel(title = "Win Rate over Time",
               sidebarLayout(
                 sidebarPanel(
+                  textOutput("tab2Title"),
                   uiOutput("attr_rad_but2"),
                   uiOutput("sel_type_battle2"),
                   uiOutput("sel_type_ship2"),

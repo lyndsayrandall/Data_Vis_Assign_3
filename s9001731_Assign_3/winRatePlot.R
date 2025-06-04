@@ -26,10 +26,12 @@ plotCumWin <- function(gamedata,queryType,queryAttr){
     
     minDate <- min(gamedata$gDate)-months(1)
     maxDate <- max(gamedata$gDate)
-    minWRPercent <- min(c(min(comb_by_Month$Win_Percent.x),
+    minWR <- min(c(min(comb_by_Month$Win_Percent.x),
                           min(comb_by_Month$Win_Percent.y)))
-    maxWRPercent <- max(c(max(comb_by_Month$Win_Percent.x),
+    minWRPercent <- if_else(minWR < 5.0, 0.0, (minWR-5) )
+    maxWR <- max(c(max(comb_by_Month$Win_Percent.x),
                           max(comb_by_Month$Win_Percent.y)))
+    maxWRPercent <- if_else(maxWR > 95.0,100.0, (maxWR+5) )
     # minDate <- min(gameData_human$gDate)
     # maxDate <- max(gameData_human$gDate)
 
@@ -58,8 +60,9 @@ plotCumWin <- function(gamedata,queryType,queryAttr){
                                           '%{y:.2f}% <br>' ),
                     line = list(simplyfy = F),
                     showlegend = F)  %>%           
-                  layout(xaxis = list(range = c((minDate),maxDate),
-                                      title = ""),
+                  layout(xaxis = list(range = c(minDate,maxDate),
+                                      title = "",
+                                      rangeslider = list(c(minDate,maxDate))),
                          yaxis = list(range = c(minWRPercent, 
                                                 maxWRPercent),
                                       title = ""))

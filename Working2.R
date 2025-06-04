@@ -159,6 +159,9 @@ test_frames_all <- testComb %>%
   accumulate_by(~gDate) %>%
   mutate(frame = as.numeric(frame))
 
+chk1 <- test_frames_all[,c(7,12)]
+
+
 
 cumWinPlot <- test_frames_all %>%
   plot_ly() %>%
