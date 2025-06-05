@@ -1,5 +1,15 @@
-
-
+/*
+# winTotalPlot.R
+# Author: Mark Randall
+# Date: 11 June 2025
+# Plots the Game and Win  over recorded time 
+# of the collected data by battle or ship
+# Moment does not work. TODO investigate
+*/
 .container {
-  margin : 0px;
+  margin: 0 ;
+  padding : 0 1% 0 1%;
+  width : 100vw;
 }
+
+

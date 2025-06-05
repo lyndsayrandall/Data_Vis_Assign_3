@@ -85,11 +85,11 @@ plotWinTot <- function(gamedata,queryType,queryAttr){
                            xanchor = "center",
                            yanchor = "center",
                            showarrow =FALSE ,
-                           font = list(size = 15)
+                           font = list(size = 18)
                          ),
                          list(
-                           text = "Total",
-                           x= -0.13,
+                           text = "Games Played",
+                           x= 0.0,
                            y= 1.05,
                            xref = "paper",
                            yref = "paper",

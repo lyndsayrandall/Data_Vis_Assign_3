@@ -25,9 +25,7 @@ source("toolTipAlertText.R")
 options(shiny.autoreload = TRUE)
 options(shiny.devmode = TRUE)
 
-#shipType <- read.xlsx("../Data/Ship Type.xlsx")
-
-# Define server logic required to draw a histogram
+# Server Logic
 server <- function(input, output, session) {
   
   shinyalert("Overview",
@@ -59,14 +57,24 @@ server <- function(input, output, session) {
     plotdmgWRDiff(gameData_human, queryType,input$queryAttr)
   })
   
-  output$histDensWRDMG <- renderPlotly({
+  output$histDensWR <- renderPlotly({
     req(input$queryTypeBattle,
         input$queryTypeShip,
         input$queryAttr)
     queryType <- if_else(input$queryAttr == "Battle.Type",
                          input$queryTypeBattle,
                          input$queryTypeShip)
-    plotdmgWRHistDens(gameData_human, queryType,input$queryAttr)
+    plotdmgWRHistDens(gameData_human, queryType,input$queryAttr)[[1]]
+  })
+  
+  output$histDensDMG <- renderPlotly({
+    req(input$queryTypeBattle,
+        input$queryTypeShip,
+        input$queryAttr)
+    queryType <- if_else(input$queryAttr == "Battle.Type",
+                         input$queryTypeBattle,
+                         input$queryTypeShip)
+    plotdmgWRHistDens(gameData_human, queryType,input$queryAttr)[[2]]
   })
   
   #For Tab 2
@@ -136,13 +144,16 @@ server <- function(input, output, session) {
 
 
 
-# Define UI for application that draws a histogram
+# Client UI logic
 ui <- fixedPage(
-  #tags$head(tags$link(rel="stylesheet", type="text/css", href="stylesheet.css")),
+ 
    useShinyjs(),
    title = "WOWS DATA tertius_keen",
    use_shiny_title(),
    busy_window_title(),
+   tags$head(
+     tags$link(rel = "stylesheet", type = "text/css", href = "stylesheet.css")
+   ),
     
     tags$head(
       tags$script(HTML("
@@ -170,7 +181,6 @@ ui <- fixedPage(
                    uiOutput("attr_rad_but"),
                    uiOutput("sel_type_battle"),
                    uiOutput("sel_type_ship"),
-                   
                    width = 2,
                     ),
                    
@@ -179,8 +189,13 @@ ui <- fixedPage(
                    card(
                      plotlyOutput("scatterWRDMG")
                    ),
-                   card(
-                     plotlyOutput("histDensWRDMG")
+                   layout_columns(
+                     card(
+                       plotlyOutput("histDensWR")),
+                     card(
+                       plotlyOutput("histDensDMG")
+                     ),
+                     col_widths = c(6,6)
                    )
                    ),
                  position = c("left")   
@@ -218,7 +233,7 @@ ui <- fixedPage(
       actionButton("about", "About") ,
       actionButton("references", "References") ,
             actionButton("dbAccess", "Access Database Structure")),
-   style = "margin: 0 ; padding : 0 1% 0 1%; width : 95vw;"
+   
    
     )
     
@@ -230,5 +245,4 @@ ui <- fixedPage(
 # Run the application 
 shinyApp(ui = ui, server = server )
 
-runGadget(shinyApp(ui = ui, server = server) , 
-          viewer =browserViewer(browser = getOption("browser")))
+
