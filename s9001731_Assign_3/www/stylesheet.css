@@ -11,6 +11,10 @@
   padding : 0 2% 0 2%;
   width : 100vw;
 }
+
+.add_link::after{
+  content:"("attr(href) ")";
+}
 /*
 .tabbable{
   width : 100vw;
