@@ -14,6 +14,7 @@ observeEvent(input[[value]], {
                 " ",
                 "Perry Swift. (2025). Potato Alert, A statistics companion app for World Of Warships. razaqq. 
                     Retrieved 10 May from https://github.com/razaqq/PotatoAlert?tab=readme-ov-file",
+                " ",
                 "Wikipedia. (2025, 25 April 2025). World of Warships. Wikipedia Foundation. 
                 Retrieved 10 May from https://en.wikipedia.org/wiki/World_of_Warships",
                " ",
@@ -25,7 +26,7 @@ observeEvent(input[[value]], {
 dispAccessModal <- function(input,value) {
   observeEvent(input[[value]], {
     showModal(modalDialog(
-      title= "Title",
+      title= "UML WOWS Access Database",
       size = "l",
       div( style='overflow:scroll',
           tags$img(src= base64enc::dataURI(file="Images/WOWS spudsRecord.png",
@@ -95,7 +96,7 @@ dispAboutModal <- function(input,value) {
                                <li>&#8195;C:/&#60;USER&#62;/Mark/AppData/Local/PotatoAlert/PotatoAlert.log a file to 
                           enable error locations.</li>
                           </ul>",
-                          "(Perry Swift,2025),br>",
+                          "(Perry Swift,2025)",
                           sep = "<br>"
                           
                           
@@ -105,4 +106,34 @@ dispAboutModal <- function(input,value) {
       footer = tagList(modalButton("Return")),
          ))})  
 }#EOFnAbout
+
+dispScreenshotAccessPng <- function(input,value) {
+  observeEvent(input[[value]], {
+    showModal(modalDialog(
+      title= "Input Screen Access",
+      size = "l",
+      div( style='overflow:scroll',
+           tags$img(src= base64enc::dataURI(file="Images/Access Input Screen.png",
+                                            mime="image/png"), 
+                    alt="Input Screen for WOWS Access Data Base",
+                    width = "100%",
+                    height = "100%")),
+      footer = tagList(modalButton("Return"))
+    ))})   
+}#EOFStructure
+
+dispScreenshotPAPng <- function(input,value) {
+  observeEvent(input[[value]], {
+    showModal(modalDialog(
+      title= "Screen Shot Potato Alert",
+      size = "l",
+      div( style='overflow:scroll',
+           tags$img(src= base64enc::dataURI(file="Images/PA 6_6_2025.png",
+                                            mime="image/png"), 
+                    alt="Input Screen for WOWS Access Data Base",
+                    width = "140%",
+                    height = "110%")),
+      footer = tagList(modalButton("Return"))
+    ))})   
+}#EOFStructure
  

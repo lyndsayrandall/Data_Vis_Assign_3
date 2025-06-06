@@ -138,7 +138,8 @@ server <- function(input, output, session) {
   dispAboutModal(input,"about")
   dispRefModal(input,"references")
   dispAccessModal(input,"dbAccess")
-  
+  dispScreenshotAccessPng(input,"screenshotAccess")
+  dispScreenshotPAPng(input,"screenshotPA")
 
 }#EOServer Function
 
@@ -254,8 +255,10 @@ ui <- fixedPage(
       style = ("position:fixed; left:0; bottom:0;"),
       actionButton("about", "About") ,
       actionButton("references", "References") ,
-            actionButton("dbAccess", "Access Database Structure")),
-   
+      actionButton("dbAccess", "Access Database Structure"),
+      actionButton("screenshotAccess", "Screenshot Access Input"),
+      actionButton("screenshotPA", "Screenshot Potato Alert") ),
+      
    
     )
     
