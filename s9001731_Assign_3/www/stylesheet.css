@@ -8,8 +8,20 @@
 */
 .container {
   margin: 0 ;
-  padding : 0 1% 0 1%;
+  padding : 0 2% 0 2%;
   width : 100vw;
 }
+/*
+.tabbable{
+  width : 100vw;
+  height : 80vh;
+}
 
+.col-sm-10{
+  width :80vw;
+}
 
+.row{
+  width: 100%;
+}
+*/

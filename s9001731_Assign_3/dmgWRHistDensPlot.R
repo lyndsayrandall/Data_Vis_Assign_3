@@ -8,7 +8,7 @@
 plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
   
   typeDF <- retTypeDF(gamedata,queryType,queryAttr)
-  
+  # 
   # attrType <- "Random"
   # typeDF<- retTypeDF(gameData_human,attrType,"Battle.Type")
 
@@ -44,7 +44,7 @@ plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
     tmpPlot_gg_base <-  ggplot(typeDF,aes( x = .data[[attr]])) +
       geom_histogram(aes(y = after_stat(density)), position = "identity",
                      binwidth = plotBinWidth, fill = mySpectral[[5]],
-                     colour = mySpectral[[4]]) +
+                     colour = mySpectral[[4]], stat = "bin") +
       geom_density(colour = mySpectral[[11]]) +
       scale_x_continuous(limits = densPlotXLim ,
                          expand = c(0,0)) +
@@ -75,18 +75,28 @@ plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
         data = tmpHist_df,
         x = ~xhis_plot,
         y = ~count_xplot,
+        hovertemplate = paste('<b>Differential</b>: %{x}',
+                              '<br><b>Count</b>: %{y} <br>',
+                              '<extra></extra>'),
+        marker = list( color = mySpectral[[5]],
+                       line = list(color = mySpectral[[11]] ,
+                                   width = 0.75)),
         type = "bar"
       ) %>%
       add_trace(
         data = tmpDens_df,
         x = ~xdens_plot,
         y = ~dens_xplot,
+        hovertemplate = paste('<b>Differential</b>: %{x}',
+                              '<br><b>Density</b>: %{y} <br>',
+                              '<extra></extra>'),
         yaxis = "y2",
+        line = list(color = mySpectral[[11]]),
         type = "scatter",
         mode = "lines"
       ) %>%
       layout(
-        margin = list(l = 50,r = 50,b = 90,t = 40,pad = 0),
+        margin = list(l = 50,r = 50,b = 90,t = 45,pad = 0),
         annotations= list(
           list(
             text = title_xaxis,
@@ -130,8 +140,11 @@ plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
                       side = "right",
                       range = c(0 ,max(tmpDens_df$dens_xplot))),
         showlegend = FALSE
-      )
+      ) %>%
+      config(mathjax = "cdn")
+    
     histDens_plot_list[[count]] <- tmpPlotly
+    
     count <- count + 1
   }#EOFor
     
@@ -228,3 +241,4 @@ plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
 #     yref = "paper",
 #     showarrow = FALSE
 #   ))
+

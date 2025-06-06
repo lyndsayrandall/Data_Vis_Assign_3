@@ -50,3 +50,20 @@ myPaired = c(brewer.pal(name="Paired",n=12))
 myDark2 = c(brewer.pal(name="Dark2",n=8))
 myGreens = c(brewer.pal(name="Greens",n=9))
 myBlues =  c(brewer.pal(name="Blues",n=9))
+
+hex2rgba <- function(hexColour, aHex) {
+  
+  tmpConv <- col2rgb(hexCol)
+  if (aHex > 1){
+    aHex = 1
+  } else if (aHex < 0){
+    aHex = 0
+  } else {
+    aHex = aHex
+  }
+  tmpRGBA <- paste0("rgba(",tmpConv[[1]],", ",tmpConv[[2]]
+                    ,", ",tmpConv[[3]],", ",aHex,")")
+  
+  return(tmpRGBA)
+  
+}

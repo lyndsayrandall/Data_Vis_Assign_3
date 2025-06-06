@@ -146,7 +146,7 @@ server <- function(input, output, session) {
 
 # Client UI logic
 ui <- fixedPage(
- 
+   withMathJax(),
    useShinyjs(),
    title = "WOWS DATA tertius_keen",
    use_shiny_title(),
@@ -154,16 +154,35 @@ ui <- fixedPage(
    tags$head(
      tags$link(rel = "stylesheet", type = "text/css", href = "stylesheet.css")
    ),
-    
-    tags$head(
-      tags$script(HTML("
-        function resizeWindow() {
-          window.resizeTo(1920,1080);
-        };
-      "))
-    ),
-    tags$body(tags$script(HTML("onload= 'resizeWindow()'"))),
-    withMathJax(),
+   tags$head(
+     tags$script(HTML("
+      function resizeWindow(width, height) {
+        window.resizeTo(width, height);
+      }
+      function sizes() {
+  const contentWidth = [...document.body.children].reduce( 
+    (a, el) => Math.max(a, el.getBoundingClientRect().right), 0) 
+    - document.body.getBoundingClientRect().x;
+
+  return {
+    windowWidth:  document.documentElement.clientWidth,
+    windowHeight: document.documentElement.clientHeight,
+    pageWidth:    Math.min(document.body.scrollWidth, contentWidth),
+    pageHeight:   document.body.scrollHeight,
+    screenWidth:  window.screen.width,
+    screenHeight: window.screen.height,
+    pageX:        document.body.getBoundingClientRect().x,
+    pageY:        document.body.getBoundingClientRect().y,
+    screenX:     -window.screenX,
+    screenY:     -window.screenY - (window.outerHeight-window.innerHeight),
+  }
+}
+      $(document).on('shiny:connected', function() {
+        resizeWindow(1920,1080);
+        console.log(sizes());
+      });
+    "))
+   ),
    
 
     # Application title
@@ -196,7 +215,8 @@ ui <- fixedPage(
                        plotlyOutput("histDensDMG")
                      ),
                      col_widths = c(6,6)
-                   )
+                   ),
+                   width = 10,
                    ),
                  position = c("left")   
                )),
@@ -219,8 +239,10 @@ ui <- fixedPage(
                   card(
                     plotlyOutput("timeTotal")
                   ),
-                style = "margin: 0 ;"
+                  width = 10,
+                  style = "margin: 0 ;"
                 ),
+                
                 position = c("left")   
               )),
      tabPanel("Page 3"),
