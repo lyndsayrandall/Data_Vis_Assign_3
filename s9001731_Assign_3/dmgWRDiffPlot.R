@@ -38,11 +38,22 @@ plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
   plotWRDmgDiff_plot_list <- list()
   for (attr in levels(typeDF$Game.Result)) {
     tmp_df <- typeDF %>% filter(Game.Result == attr)
+    quad1 <- dim(tmp_df %>% filter(WR.Differential > 0 & DMG.Differential > 0 ))[[1]]
+    quad2 <- dim(tmp_df %>% filter(WR.Differential <= 0 & DMG.Differential > 0 ))[[1]]
+    quad3 <- dim(tmp_df %>% filter(WR.Differential <= 0 & DMG.Differential <= 0 ))[[1]]
+    quad4 <- dim(tmp_df %>% filter(WR.Differential > 0 & DMG.Differential <= 0 ))[[1]]
+
+    print(paste("quad 1", quad1,quad2 ,quad3, quad4))
+   
     tmp_plot <- plot_ly( tmp_df,
                          x = ~WR.Differential,
                          y = ~DMG.Differential,
                          type = "scatter",
                          mode = "markers",
+                         hovertemplate = paste('<b><i>Differential</i></b>',
+                                               '<br><b>Win Rate</b>: %{x}',
+                                               '<br><b>Damage</b>: %{y} <br>',
+                                               '<extra></extra>'),
                          marker= list(color = myDark2[[count]],
                                       size = 4)) %>%
                 layout(showlegend = FALSE,
@@ -50,14 +61,69 @@ plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
                                     range = plotXLim),
                        yaxis = list(title = "",
                                     range = plotYLim)) %>%
-                layout(annotations = list(text = levels(typeDF$Game.Result)[[count]],
-                                          x= 0.5,
-                                          y = 1.06,
-                                          bgcolor = paste0(myDark2[[count]],"80"),
-                                          bordercolor = "black",
-                                          showarrow = FALSE,
-                                          xref = "paper",
-                                          yref = "paper"))
+                layout(annotations = list(
+                  list( text = levels(typeDF$Game.Result)[[count]],
+                               x= 0.5,
+                               y = 1.06,
+                               bgcolor = paste0(myDark2[[count]],"80"),
+                               bordercolor = "black",
+                               showarrow = FALSE,
+                               xref = "paper",
+                               yref = "paper"),
+                 list( text =   quad1,
+                                x= 0.9,
+                                y= 1.0,
+                                showarrow = FALSE,
+                                font = list(color = myBlues[[8]]),
+                                bgcolor = myBlues[[2]],
+                                bordercolor = myBlues[[8]],
+                                xref = "paper",
+                                yref= "paper",
+                                hovertext=paste("Games in",
+                                                "<br>Quadrant 1")
+                               ),
+                  list( text =  quad2,
+                                x= 0.0,
+                                y= 1.0,
+                                showarrow = FALSE,
+                                font = list(color = myBuPu[[6]]),
+                                bgcolor = myBuPu[[2]],
+                                bordercolor = myBuPu[[8]],
+                                xref = "paper",
+                                yref= "paper",
+                                hovertext=paste("Games in",
+                                                "<br>Quadrant 2")
+                               ),
+                  list( text =  quad3,
+                                x= 0.0,
+                                y= 0.0,
+                                showarrow = FALSE,
+                                font = list(color = myYlOrRd[[8]]),
+                                bgcolor = myYlOrRd[[2]],
+                                bordercolor = myYlOrRd[[8]],
+                                xref = "paper",
+                                yref= "paper",
+                                hovertext=paste("Games in",
+                                                "<br>Quadrant 3")
+                                ),
+                  list( text =  quad4,
+                                x= 0.9,
+                                y= 0.0,
+                                showarrow = FALSE,
+                                font = list(color = myBuPu[[6]]),
+                                bgcolor = myBuPu[[2]],
+                                bordercolor = myBuPu[[8]],
+                                xref = "paper",
+                                yref= "paper",
+                                hovertext=paste("Games in",
+                                                "<br>Quadrant 3")
+                        )
+                 ))
+                                
+                  
+                  
+                       
+                
     
     plotWRDmgDiff_plot_list[[count]] <- tmp_plot
     count= count+1
@@ -76,7 +142,7 @@ plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
                               ),
                               list(
                                 text = "Average\nDamage\nDifferential",
-                                x= -0.13,
+                                x= -0.09,
                                 y= 0.57,
                                 xref = "paper",
                                 yref = "paper",

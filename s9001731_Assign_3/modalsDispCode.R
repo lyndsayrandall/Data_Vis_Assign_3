@@ -5,20 +5,24 @@ observeEvent(input[[value]], {
   showModal(modalDialog(
     title = HTML("<b><u>References:</u></b>"),
     size = "l",
-    HTML(paste("Beadell, S. J. L. R. N. (1941). View from HMS HERMIONE of HMS LEGION moving alongside the damaged and 
-                  listing HMS ARK ROYAL in order to take off survivors. In HMS_Ark_Royal_sinking_2.jpg (Ed.), jpg (Vol. 761x 
-                  571px). Imperial War Museums(collection no. 4700-01): Imperial War Museums.",
-                " ",
-                "Wargaming.net. (2012-2025, 2025). World of Warships. Wargaming.net. 
-                    Retrieved 10 May from https://worldofwarships.asia/en/content/game/",
-                " ",
-                "Perry Swift. (2025). Potato Alert, A statistics companion app for World Of Warships. razaqq. 
-                    Retrieved 10 May from https://github.com/razaqq/PotatoAlert?tab=readme-ov-file",
-                " ",
-                "Wikipedia. (2025, 25 April 2025). World of Warships. Wikipedia Foundation. 
-                Retrieved 10 May from https://en.wikipedia.org/wiki/World_of_Warships",
-               " ",
-          sep = "<br>")),
+    HTML("<ul>
+              <li>Beadell, S. J. L. R. N. (1941). View from HMS HERMIONE of HMS 
+              LEGION moving alongside the damaged and listing HMS ARK ROYAL 
+              in order to take off survivors. In HMS_Ark_Royal_sinking_2.jpg (Ed.),
+              jpg (Vol. 761x571px). Imperial War Museums(collection no. 4700-01): 
+              Imperial War Museums.</li>
+              <li>Wargaming.net. (2012-2025, 2025). World of Warships. Wargaming.net. 
+              Retrieved 10 May from 
+              <a class = 'add_link' href='https://worldofwarships.asia/en/content/game/'></a></li>
+              <li>Perry Swift. (2025). Potato Alert, A statistics companion app for 
+              World Of Warships. razaqq. Retrieved 10 May from 
+              <a class = 'add_link' href='https://github.com/razaqq/PotatoAlert'> </a></li>
+              <li>Wikipedia. (2025, 25 April 2025). World of Warships. Wikipedia Foundation. 
+              Retrieved 10 May from 
+              <a class = 'add_link' href='https://en.wikipedia.org/wiki/World_of_Warships'></a> </li>
+              <li>Mark Randall, & Perry Swift. (2015-2025). Potato Alert tertius_keen Spuds Record
+              [Microsoft Access SQLIte].</li>
+         </ul>"),
     footer = tagList(modalButton("Return"))
   ))})    
 }

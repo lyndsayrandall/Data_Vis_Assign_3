@@ -14,12 +14,13 @@ library(shinyalert)
 library(shinyWidgets)
 library(shinytitle)
 
+
+
 source("mainServer.R") 
 source("moduleUI.R")
-source("utilFun.R")
 source("modalsDispCode.R")
 source("toolTipAlertText.R")
-
+source("utilFun.R")
 
 
 options(shiny.autoreload = TRUE)

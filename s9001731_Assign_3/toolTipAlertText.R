@@ -10,5 +10,6 @@ that connects with the game API is used. This was then loaded to a self written
 access data base. ",
 "<br>",
 "This programme will only look at the type of battle and ship's influence on the 
-teams win rate and damage differential and the chance of winning a match."))
+teams win rate and damage differential and the chance of winning a match. Data 
+is taken from an unpublished personal database(Mark Randall, & Perry Swift. (2015-2025)."))
 

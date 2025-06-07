@@ -37,7 +37,7 @@ retRdByMonth <- function(typeDF) {
 
 
 # COLOUR PALETTES
-# Define a range of colur palettes to be used in the
+# Define a range of colour palettes to be used in the
 # application
 
 
@@ -50,7 +50,9 @@ myPaired = c(brewer.pal(name="Paired",n=12))
 myDark2 = c(brewer.pal(name="Dark2",n=8))
 myGreens = c(brewer.pal(name="Greens",n=9))
 myBlues =  c(brewer.pal(name="Blues",n=9))
+myYlOrRd = c(brewer.pal(name="YlOrRd",n=9))
 
+# Function to convert hex to rgbs with opacity 
 hex2rgba <- function(hexColour, aHex) {
   
   tmpConv <- col2rgb(hexCol)
