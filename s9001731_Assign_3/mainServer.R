@@ -33,7 +33,7 @@ humanOpposition <- c("Random", "Ranked", "Clan", "Brawl Clan", "Arms Race",
                      "Dirigible Derby", "Mode Shuffle", "Convoy", "Brawl",
                      "Asymmetric lower")
 
-gameData <- read.xlsx("Data/gameData.xlsx")  %>%
+gameData <- read.xlsx("Data/GameData.xlsx")  %>%
   mutate(Timestamp = convertToDateTime(Date+Time),
          gDate = convertToDate(Date),
          gYear = lubridate::year(Timestamp),

@@ -16,6 +16,15 @@ library(shinytitle)
 
 
 
+source("winTotPlot.R")
+source("winRatePlot.R")
+source("errorPlotsMessages.R")
+source("dmgWRDiffPlot.R")
+source("dmgWRHistDensPlot.R")
+
+
+
+
 source("mainServer.R") 
 source("moduleUI.R")
 source("modalsDispCode.R")
@@ -25,6 +34,9 @@ source("utilFun.R")
 
 options(shiny.autoreload = TRUE)
 options(shiny.devmode = TRUE)
+
+
+
 
 # Server Logic
 server <- function(input, output, session) {
