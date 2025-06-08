@@ -25,6 +25,7 @@ source("winRatePlot.R")
 source("errorPlotsMessages.R")
 source("dmgWRDiffPlot.R")
 source("dmgWRHistDensPlot.R")
+source("winLossByDayandHour.R")
 
 
 options(scipen = 9999)
@@ -38,7 +39,8 @@ gameData <- read.xlsx("Data/GameData.xlsx")  %>%
          gDate = convertToDate(Date),
          gYear = lubridate::year(Timestamp),
          gMonth = lubridate::month(Timestamp, label =TRUE,abbr = TRUE ),
-         gHour = lubridate::hour(Timestamp)) %>%
+         gHour = lubridate::hour(Timestamp),
+         gDay = lubridate::wday(Timestamp, week_start = 7, label= TRUE, abbr= TRUE)) %>%
   filter(!(is.na(WR.Differential) | Game.Result == "" ))
 colnames(gameData)[5] <- "ShipId"
 

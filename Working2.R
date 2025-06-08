@@ -27,7 +27,8 @@ myGreens = c(brewer.pal(name="Greens",n=9))
 myBlues =  c(brewer.pal(name="Blues",n=9))
 
 
-gameData <- read.xlsx("Data/gameData.xlsx")  %>%
+
+gameData <- read.xlsx("s9001731_Assign_3/Data/GameData.xlsx")  %>%
   mutate(Timestamp = convertToDateTime(Date+Time),
          gDate = convertToDate(Date),
          gYear = lubridate::year(Timestamp),
@@ -36,9 +37,8 @@ gameData <- read.xlsx("Data/gameData.xlsx")  %>%
   filter(!(is.na(WR.Differential) | Game.Result == "" ))
 colnames(gameData)[5] <- "ShipId"
 
-shipData <- read.xlsx("Data/Ship Data.xlsx")
-shipType <- read.xlsx("Data/Ship Type.xlsx")
-
+shipData <- read.xlsx("s9001731_Assign_3/Data/Ship Data.xlsx")
+shipType <- read.xlsx("s9001731_Assign_3/Data/Ship Type.xlsx")
 gameData %<>% left_join(shipData ,
                         by= c("ShipId" = "ShipId"))
 
@@ -62,7 +62,7 @@ chkOppDmgDif <- gameData %>%
           (Battle.Type %in% c("Random","Ranked","Clan","Brawl Clan","Brawl",
                               "Convoy","Arms Race","Mode Shuffle"))    )
 
-gameType <- read.xlsx("Data/BattleType.xlsx")
+gameType <- read.xlsx("s9001731_Assign_3/Data/BattleType.xlsx")
 colnames(gameType) <- c("Id", "Type")
 
 last(gameData$gDate)
@@ -230,14 +230,14 @@ testSlider <- test_frames_all %>%
 # pb <- plotly_build(p)
 
 
-pb<- plotly_build(testSlider)
-
-traceNames <- list("Total Win Percent ",
-                   paste(battleType,"Win Percent"))
-for(i in 1:length(traceNames)){
-  pb$x$data[[i]]$name <- traceNames[[pb$x$data[[i]]$name]]
-}
-pb$x$data[[i]]$name <-traceNames[[1]]
+# pb<- plotly_build(testSlider)
+# 
+# traceNames <- list("Total Win Percent ",
+#                    paste(battleType,"Win Percent"))
+# for(i in 1:length(traceNames)){
+#   pb$x$data[[i]]$name <- traceNames[[pb$x$data[[i]]$name]]
+# }
+# pb$x$data[[i]]$name <-traceNames[[1]]
 
 
 timeWRPlot <- subplot(cumWinPlot,cumWinPlot_All , nrows =2,
@@ -548,7 +548,19 @@ facet_plot <- subplot(plotWRDmgDiff_plot_list2, nrows = 1,
            
          ))
 
+countByHour <- typeDF %>% 
+               group_by(gHour) %>%
+               mutate(Freq = n()) %>% 
+               select(c("gHour","Freq")) %>%
+               distinct() %>%
+               ungroup()
 
+hourPlot <- countByHour %>%
+            plot_ly(
+              x = ~gHour,
+              y = ~Freq,
+             
+              type= "bar")
 
 
 # library(ggpubr)

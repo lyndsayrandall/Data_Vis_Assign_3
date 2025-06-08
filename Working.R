@@ -11,13 +11,31 @@ library(tidyr)
 library(magrittr)
 
 
-gamedata <- read.xlsx("../Data/GameData.xlsx")  %>%
+gamedata <- read.xlsx("s9001731_Assign_3/Data/GameData.xlsx")  %>%
             mutate(Timestamp = convertToDateTime(Date+Time),
                    gDate = convertToDate(Date),
                    gYear = lubridate::year(Timestamp),
                    gMonth = lubridate::month(Timestamp, label =TRUE,abbr = TRUE ),
-                   gHour = lubridate::hour(Timestamp)) %>%
+                   gHour = lubridate::hour(Timestamp),
+                   gDay = lubridate::wday(Timestamp, week_start = 7, label= TRUE, abbr= TRUE)) %>%
             filter(!(is.na(WR.Differential) | Game.Result == "" ))
+colnames(gamedata)[5] <- "ShipId"
+shipData <- read.xlsx("s9001731_Assign_3/Data/Ship Data.xlsx")
+shipType <- read.xlsx("s9001731_Assign_3/Data/Ship Type.xlsx")
+gamedata %<>% left_join(shipData ,
+                        by= c("ShipId" = "ShipId"))
+
+gamedata %<>% left_join(shipType ,
+                        by= c("Ship.Type" = "Ship.Type"))
+
+humanOpposition <- c("Random", "Ranked", "Clan", "Brawl Clan", "Arms Race", 
+                     "Dirigible Derby", "Mode Shuffle", "Convoy", "Brawl","Asymmetric lower")
+gameData_human <- gamedata %>%
+  filter(Battle.Type %in% humanOpposition) %>%
+  mutate(Battle.Type = case_when( Battle.Type %in% c(
+    "Arms Race","Convoy","Drigible Derby","Asymmetric lower")
+    ~ "Mode Shuffle",
+    TRUE ~ Battle.Type))
 
 last(gamedata$gDate)
 # Find dates outside reference to examine original data base.
@@ -371,8 +389,8 @@ histDistPlot <- subplot(sub_sub_plot, sub_sub_plot2, plotly_empty(),nrows = 1,
   ))
 
 new_df <- gameData_human %>% 
-          select(c("Battle.Type","ShipId","WR.Differential",
-                                      "DMG.Differential","gHour","gMonth", "Game.Result"))
+          select(c("Battle.Type","ShipId","WR.Differential", "gDay",
+                                      "DMG.Differential","gHour", "Game.Result"))
                              
 tpm <- GGally::ggpairs(new_df, aes(colour = Game.Result))
 

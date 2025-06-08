@@ -23,6 +23,14 @@ tab_2_title <- function(queryTypeBattle2,queryTypeShip2,queryAttr2){
                      " in ",if_else(queryAttr2 == "Battle.Type","Battle","Ship"))
   return(msg_tab_2)
 }#EOFn
+
+tab_3_title <- function(queryTypeBattle3,queryTypeShip3,queryAttr3){
+  msg_tab_3<- paste0("Win, Loss and Draw for: ",
+                     if_else(queryAttr3 == "Battle.Type",queryTypeBattle3,
+                             queryTypeShip3),
+                     " in ",if_else(queryAttr3 == "Battle.Type","Battle","Ship"))
+  return(msg_tab_3)
+}#E
 listType <- as.list(gameType_human$Type)
 
 
@@ -68,4 +76,26 @@ selTypeShip2 <- selectizeInput( "queryTypeShip2",
                                choices = c(unique(shipType$Ship.Type)),
                                multiple = FALSE,
                                selected = c("Destroyer")
+)
+
+attrRadioButton3 <- radioButtons("queryAttr3", "Query Game Attribute",
+                                 choices = c("Battle" = "Battle.Type",
+                                             "Ship" = "Ship.Type"),
+                                 inline = TRUE,
+                                 selected = "Battle.Type",
+                                 width = "100%")
+
+
+selTypeBattle3 <- selectizeInput( "queryTypeBattle3",
+                                  label = "Query Battle Type",
+                                  choices = c(unique(gameType_human$Type)),
+                                  multiple = FALSE,
+                                  selected = c("Random")
+)
+
+selTypeShip3 <- selectizeInput( "queryTypeShip3",
+                                label = "Query Ship Type",
+                                choices = c(unique(shipType$Ship.Type)),
+                                multiple = FALSE,
+                                selected = c("Destroyer")
 )

@@ -43,7 +43,7 @@ plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
     quad3 <- dim(tmp_df %>% filter(WR.Differential <= 0 & DMG.Differential <= 0 ))[[1]]
     quad4 <- dim(tmp_df %>% filter(WR.Differential > 0 & DMG.Differential <= 0 ))[[1]]
 
-    print(paste("quad 1", quad1,quad2 ,quad3, quad4))
+    #print(paste("quad 1", quad1,quad2 ,quad3, quad4))
    
     tmp_plot <- plot_ly( tmp_df,
                          x = ~WR.Differential,
@@ -130,7 +130,7 @@ plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
   }#EOFor
   facet_plot <- subplot(plotWRDmgDiff_plot_list, nrows = 1, 
                         shareX = TRUE, shareY = TRUE  ) %>%
-                layout(margin = list(l=100,r=0,b=90,t=40,pad=0),
+                layout(margin = list(l=85,r=0,b=90,t=40,pad=0),
                        annotations= list(
                               list(
                                 text = "Average Win Rate Differential",
@@ -141,9 +141,9 @@ plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
                                 showarrow =FALSE
                               ),
                               list(
-                                text = "Average\nDamage\nDifferential",
-                                x= -0.09,
-                                y= 0.57,
+                                text = "Average Damage Differential",
+                                x= -.05,
+                                y= 1.07,
                                 xref = "paper",
                                 yref = "paper",
                                 showarrow =FALSE
