@@ -138,15 +138,17 @@ plotdmgWRDiff <- function(gamedata, queryType,queryAttr){
                                 y= -0.15,
                                 xref = "paper",
                                 yref = "paper",
-                                showarrow =FALSE
+                                showarrow =FALSE,
+                                font = list(size = 18)
                               ),
                               list(
                                 text = "Average Damage Differential",
-                                x= -.05,
-                                y= 1.07,
+                                x= -.035,
+                                y= 1.08,
                                 xref = "paper",
                                 yref = "paper",
-                                showarrow =FALSE
+                                showarrow =FALSE,
+                                font = list(size = 18)
                               )
                          
                        ))
