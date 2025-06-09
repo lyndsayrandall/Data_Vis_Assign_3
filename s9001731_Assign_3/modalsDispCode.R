@@ -25,6 +25,14 @@ observeEvent(input[[value]], {
               <a class = 'add_link' href='https://en.wikipedia.org/wiki/World_of_Warships'></a> </li>
               <li>Mark Randall, & Perry Swift. (2015-2025). Potato Alert tertius_keen Spuds Record
               [Microsoft Access SQLIte].</li>
+              <li>Daboin, C. J., & Laurent;, S. (2023). Why is the shinyBS tooltip not 
+              showing up while using bslib? In (2025 ed.). stackoverflow: Stack OverFlow.<br>
+              <a class = 'add_link' href='https://stackoverflow.com/questions/76755621/why-is-the-
+              shinybs-tooltip-not-showing-up-while-using-bslib'></a></li>
+              <li>Shiny. (2024, 2024). Themes. Shiny. Retrieved 9 Jun from 
+              <a class = 'add_link' href='https://shiny.posit.co/r/articles/build/themes/'></a>
+
+
          </ul>"),
     footer = tagList(modalButton("Return"))
   ))})    

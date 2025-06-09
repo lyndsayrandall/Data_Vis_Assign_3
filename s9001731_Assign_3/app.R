@@ -45,11 +45,13 @@ server <- function(input, output, session) {
         input$queryAttr2)
     tab_2_title(input$queryTypeBattle2,input$queryTypeShip2,
                 input$queryAttr2)
-  })
+    })
   
   output$attr_rad_but2 <- renderUI({attrRadioButton2})
   output$sel_type_battle2 <- renderUI({selTypeBattle2})
   output$sel_type_ship2 <- renderUI({selTypeShip2})
+  
+  output$warningText <- renderUI({selAttribute})
   
   output$timeWR <- renderPlotly({
     input$queryTypeBattle2
@@ -283,6 +285,15 @@ ui <- fixedPage(
                   uiOutput("attr_rad_but2"),
                   uiOutput("sel_type_battle2"),
                   uiOutput("sel_type_ship2"),
+                  tags$div(HTML(paste(uiOutput("warningText"))),
+                           style = "font-size: 6px;
+                                    border-style:solid;
+                                    border- radius: 10px;
+                                    border-color: black;
+                                    background-color:Tomato;
+                                    padding : 5px;
+                                    border-width: 2px;
+                                    color : white;"),
                   width = 2,
                 ),
                 
