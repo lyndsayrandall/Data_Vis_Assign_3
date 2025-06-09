@@ -7,8 +7,13 @@
 plotWinTot <- function(gamedata,queryType,queryAttr){
   
   typeDF <- retTypeDF(gamedata,queryType,queryAttr)
-  # attrType <- "Random"
-  # typeDF<- retTypeDF(gameData_human,attrType,"Battle.Type")
+  # attrType <- "Frigate"
+  # typeDF<- retTypeDF(gameData_human,attrType,"Ship.Type")
+  
+  if(plyr::empty(typeDF)){
+    errPlot <- errorPlotFig()
+    return(errPlot)
+  }
   
   rd_by_month <- retRdByMonth(typeDF)
   rd_by_month_All <- retRdByMonth(gamedata)

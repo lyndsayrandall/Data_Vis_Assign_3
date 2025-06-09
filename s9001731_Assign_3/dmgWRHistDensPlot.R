@@ -96,17 +96,18 @@ plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
         mode = "lines"
       ) %>%
       layout(
-        margin = list(l = 50,r = 50,b = 90,t = 45,pad = 0),
+        margin = list(l = 50,r = 50,b = 95,t = 45,pad = 0),
         annotations= list(
           list(
             text = title_xaxis,
             x= 0.5,
-            y= -0.11,
+            y= -0.15,
             xref = "paper",
             yref = "paper",
             xanchor = "center",
             yanchor = "center",
-            showarrow =FALSE
+            showarrow =FALSE,
+            font = list(size = 18)
           ),
           list(
             text = "Density",
@@ -114,7 +115,8 @@ plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
             y= 1.00,
             xref = "paper",
             yref = "paper",
-            showarrow =FALSE
+            showarrow =FALSE,
+            font = list(size = 18)
           ),
           list(
             text = "Count",
@@ -122,16 +124,18 @@ plotdmgWRHistDens <- function(gamedata,queryType,queryAttr){
             y= 1.00,
             xref = "paper",
             yref = "paper",
-            showarrow =FALSE
+            showarrow =FALSE,
+            font = list(size = 18)
           ),
           list(
             text= TeX("$Bin\\;Width\\;Used:\\\\Freedman-Diaconis'\\;\\;bin_{size} = \\frac{(2*IQR)}{\\sqrt[3]{n}}$") ,
             x= 0.5,
-            y= -0.30,
+            y= -0.35,
             xref = "paper",
             yref = "paper",
-            showarrow = FALSE)),
-        
+            showarrow = FALSE,
+            font = list(size = 10)
+          )),
         xaxis = list(title = "",
                      range = c(min(tmpHist_df$xhis_plot),max(tmpHist_df$xhis_plot))),
         yaxis = list(title = ""),

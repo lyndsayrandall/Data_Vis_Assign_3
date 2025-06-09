@@ -1,3 +1,10 @@
+# errorPlotsMessages.R
+# Author: Mark Randall
+# Date: 11 June 2025
+# Creates a plot for no data in data frame
+
+
+
 library('RCurl')
 library(png)
 errorPlotFig <- function() {
@@ -32,13 +39,22 @@ errorPlotFig <- function() {
                          zeroline = FALSE,
                          showgrid = FALSE,
                          showticklabels=FALSE),
-            annotations = list( x = 1.8,
-                                y = 0.8,
-                                xref = "x",
-                                yref = "y",
-                                text = "(Beadell,1941)",
-                                showarrow = c(FALSE)) ) %>%
-    config(displayModeBar = FALSE)
+            annotations = list(
+                            list( x = 1.8,
+                                  y = 0.8,
+                                  xref = "x",
+                                  yref = "y",
+                                  text = "(Beadell,1941)",
+                                  showarrow = c(FALSE)),
+                            list( x = 1.0,
+                                  y = 0.5,
+                                  xref = "x",
+                                  yref = "y",
+                                  text = "No Information Available",
+                                  showarrow = c(FALSE),
+                                  font = list(size = 24))
+            )) %>%
+             config(displayModeBar = FALSE)
 
   
   return(errFig)

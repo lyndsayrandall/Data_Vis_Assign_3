@@ -1,6 +1,10 @@
-
+# moduleUI.R
+# Author: Mark Randall
+# Date: 11 June 2025
+# Text and functions used in UI Render
 
 slideTitle <- "Where the Wins are!!! World of Warships."
+
 sideImage <- div( style = "height:10%;",
               tags$img(src = base64enc::dataURI(file = 'Images/game.ico',
                                                 mime = 'image/vnd.microsoft.icon'),

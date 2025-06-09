@@ -87,15 +87,17 @@ plotByHour <- function(gamedata,queryType,queryAttr){
                                  y= -0.2,
                                  xref = "paper",
                                  yref = "paper",
-                                 showarrow =FALSE
-                               ),
+                                 showarrow =FALSE,
+                                 font = list(size = 18)
+                                 ),
                                list(
                                  text = "Total",
                                  x= -.05,
                                  y= 1.07,
                                  xref = "paper",
                                  yref = "paper",
-                                 showarrow =FALSE
+                                 showarrow =FALSE,
+                                 font = list(size = 16)
                                )
                              ))
   
@@ -178,7 +180,8 @@ plotByDay <- function(gamedata,queryType,queryAttr){
                                  y= -0.2,
                                  xref = "paper",
                                  yref = "paper",
-                                 showarrow =FALSE
+                                 showarrow =FALSE,
+                                 font = list(size = 18)
                                ),
                                list(
                                  text = "Total",
@@ -186,7 +189,8 @@ plotByDay <- function(gamedata,queryType,queryAttr){
                                  y= 1.07,
                                  xref = "paper",
                                  yref = "paper",
-                                 showarrow =FALSE
+                                 showarrow =FALSE,
+                                 font = list(size = 16)
                                )
                              ))
   return(facet_byDay_plot)

@@ -1,4 +1,7 @@
-
+# modalsDispCode.R
+# Author: Mark Randall
+# Date: 11 June 2025
+# Code to render footer modals
 
 dispRefModal <- function(input,value) {
 observeEvent(input[[value]], {

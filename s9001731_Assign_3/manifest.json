@@ -1,3 +1,14 @@
+/*
+# manifest.json 
+# Author: Mark Randall
+# Date: 11 June 2025
+# Env for posit cloud render to URL through git hub
+*/
+
+
+
+
+
 {
   "version": 1,
   "locale": "en_AU",
