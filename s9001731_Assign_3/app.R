@@ -116,6 +116,24 @@ server <- function(input, output, session) {
     queryType <- if_else(input$queryAttr == "Battle.Type",
                          input$queryTypeBattle,
                          input$queryTypeShip)
+    # Create 0-row data frame which will be used to store data
+    dat2 <- data.frame(x = numeric(0), y = numeric(0))
+    withProgress(message = 'Making plot', value = 0, {
+      # Number of times we'll go through the loop
+      n <- 10
+      
+      for (i in 1:n) {
+        # Each time through the loop, add another row of data. This is
+        # a stand-in for a long-running computation.
+        dat <- rbind(dat2, data.frame(x = rnorm(1), y = rnorm(1)))
+        
+        # Increment the progress bar, and update the detail text.
+        incProgress(1/n, detail = paste("Doing part", i))
+        
+        # Pause for 0.1 seconds to simulate a long computation.
+        Sys.sleep(0.3)
+      }
+    })
     plotdmgWRDiff(gameData_human, queryType,input$queryAttr)
   })
   
@@ -141,11 +159,11 @@ server <- function(input, output, session) {
   # For Tab 3
   
   output$tab3Title <- renderText({
-    req(input$queryTypeBattle,
-        input$queryTypeShip,
-        input$queryAttr)
-    tab_3_title(input$queryTypeBattle,input$queryTypeShip,
-                input$queryAttr)})
+    req(input$queryTypeBattle3,
+        input$queryTypeShip3,
+        input$queryAttr3)
+    tab_3_title(input$queryTypeBattle3,input$queryTypeShip3,
+                input$queryAttr3)})
   
   output$plotbyhour <- renderPlotly({
     req(input$queryTypeBattle3,
@@ -154,6 +172,24 @@ server <- function(input, output, session) {
     queryType <- if_else(input$queryAttr3 == "Battle.Type",
                          input$queryTypeBattle3,
                          input$queryTypeShip3)
+    # Create 0-row data frame which will be used to store data
+    dat3 <- data.frame(x = numeric(0), y = numeric(0))
+    withProgress(message = 'Making plot', value = 0, {
+      # Number of times we'll go through the loop
+      n <- 10
+      
+      for (i in 1:n) {
+        # Each time through the loop, add another row of data. This is
+        # a stand-in for a long-running computation.
+        dat <- rbind(dat3, data.frame(x = rnorm(1), y = rnorm(1)))
+        
+        # Increment the progress bar, and update the detail text.
+        incProgress(1/n, detail = paste("Doing part", i))
+        
+        # Pause for 0.1 seconds to simulate a long computation.
+        Sys.sleep(0.3)
+      }
+    })
     plotByHour(gameData_human, queryType,input$queryAttr3)
   })
   

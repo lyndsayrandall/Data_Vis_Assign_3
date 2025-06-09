@@ -39,11 +39,11 @@ gameData <- read.xlsx("Data/GameData.xlsx")  %>%
          gDate = convertToDate(Date),
          gYear = lubridate::year(Timestamp),
          gMonth = lubridate::month(Timestamp, label =TRUE,abbr = TRUE ),
-         gHour = lubridate::hour(Timestamp),
+         gHour = factor(lubridate::hour(Timestamp), ordered = TRUE),
          gDay = lubridate::wday(Timestamp, week_start = 7, label= TRUE, abbr= TRUE)) %>%
   filter(!(is.na(WR.Differential) | Game.Result == "" ))
 colnames(gameData)[5] <- "ShipId"
-
+str(gameData$gDay)
 gameData$Game.Result <- factor(gameData$Game.Result,
                                levels = c("Win","Loss","Draw"),
                                labels = c("Win","Loss","Draw"),
