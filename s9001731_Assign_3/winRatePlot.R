@@ -8,6 +8,11 @@ plotCumWin <- function(gamedata,queryType,queryAttr){
     
     typeDF <- retTypeDF(gamedata,queryType,queryAttr)
     
+    if(plyr::empty(typeDF)){
+      errPlot <- errorPlotFig()
+      return(errPlot)
+    }
+    
     # attrType <- "Light Cruiser"
     # typeDF<- retTypeDF(gameData_human,attrType,"Ship.Type")
 
